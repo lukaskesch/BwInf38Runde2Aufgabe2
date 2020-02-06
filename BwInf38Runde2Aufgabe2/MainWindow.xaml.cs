@@ -31,10 +31,12 @@ namespace BwInf38Runde2Aufgabe2
         private void ButtonCalculate_Click(object sender, RoutedEventArgs e)
         {
             Prepare();
-            AddOperator addOperator = new AddOperator(new AddOperator(2, 2).GetResult(), 4);
+            AddOperator addOperator = new AddOperator(new AddOperator(2, 2), 4);
             //MessageBox.Show(addOperator.GetResult().ToString());
             PowerOperator powerOperator = new PowerOperator(5, 2);
             MessageBox.Show(powerOperator.GetResult().ToString());
+
+            Calculation.CalculateTerm(0, 0);
         }
         private void Prepare()
         {
@@ -50,9 +52,6 @@ namespace BwInf38Runde2Aufgabe2
                 throw;
             }
         }
-        private void Recursion()
-        {
-
-        }
+       
     }
 }
