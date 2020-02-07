@@ -8,7 +8,6 @@ namespace BwInf38Runde2Aufgabe2
 {
     public abstract class Term
     {
-
         public virtual long GetResult()
         {
             return 0;
@@ -125,6 +124,18 @@ namespace BwInf38Runde2Aufgabe2
         public override string PrintTerm()
         {
             return "(" + Term1.PrintTerm() + "/" + Term2.PrintTerm() + ")";
+        }
+        public static bool IsCalculatable(Term Term1, Term Term2)
+        {
+            int Remainder = (int)(Term1.GetResult() % Term2.GetResult());
+            if(Remainder == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
