@@ -9,7 +9,7 @@ namespace BwInf38Runde2Aufgabe2
     public abstract class Term
     {
 
-        public virtual int GetResult()
+        public virtual long GetResult()
         {
             return 0;
         }
@@ -26,7 +26,7 @@ namespace BwInf38Runde2Aufgabe2
             Value = _Value;
         }
 
-        public override int GetResult()
+        public override long GetResult()
         {
             return Value;
         }
@@ -68,7 +68,7 @@ namespace BwInf38Runde2Aufgabe2
     {
         public AddOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
 
-        public override int GetResult()
+        public override long GetResult()
         {
             return  Term1.GetResult() + Term2.GetResult();
         }
@@ -82,7 +82,7 @@ namespace BwInf38Runde2Aufgabe2
     {
         public SubtractOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
 
-        public override int GetResult()
+        public override long GetResult()
         {
             return Term1.GetResult() - Term2.GetResult();
         }
@@ -96,7 +96,7 @@ namespace BwInf38Runde2Aufgabe2
     {
         public MultiplyOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
 
-        public override int GetResult()
+        public override long GetResult()
         {
             return Term1.GetResult() * Term2.GetResult();
         }
@@ -110,7 +110,7 @@ namespace BwInf38Runde2Aufgabe2
     {
         public DivisionOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
 
-        public override int GetResult()
+        public override long GetResult()
         {
             return Term1.GetResult() / Term2.GetResult();
         }
@@ -124,7 +124,7 @@ namespace BwInf38Runde2Aufgabe2
     {
         public PowerOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
 
-        public override int GetResult()
+        public override long GetResult()
         {
             return (int)Math.Pow(Term1.GetResult(), Term2.GetResult());
         }

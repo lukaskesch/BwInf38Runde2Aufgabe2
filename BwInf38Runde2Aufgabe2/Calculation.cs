@@ -9,13 +9,13 @@ namespace BwInf38Runde2Aufgabe2
 {
     struct TResult
     {
-        public TResult(int _Result, int _Row, int _Column)
+        public TResult(long _Result, int _Row, int _Column)
         {
             Result = _Result;
             Row = _Row;
             Column = _Column;
         }
-        public int Result;
+        public long Result;
         public int Row;
         public int Column;
     }
@@ -84,7 +84,7 @@ namespace BwInf38Runde2Aufgabe2
             }
         }
 
-        public static bool CheckIfResultAlreadyExist(int NewTermResult)
+        public static bool CheckIfResultAlreadyExist(long NewTermResult)
         {
             foreach(TResult OldTermResults in ListResults)
             {
