@@ -5,23 +5,37 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BwInf38Runde2Aufgabe2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="200" Width="400">
+        Title="MainWindow" Height="250" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBox Name="TextBoxNumberToCalculate" Grid.Column="0" Margin="10 16"/>
-            <TextBox Name="TextBoxDigit" Grid.Column="1" Margin="10 16"/>
-        </Grid>
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Label Content="Zu erstellende Zahl: " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox Name="TextBoxNumberToCalculate" Width="100" Margin="0 10"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Label Content="Zu verwendende Ziffer: " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBox Name="TextBoxDigit" Grid.Column="1" Width="15" Margin="0 10"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="2">
+            <Label Content="Verwende Modulo" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <CheckBox Name="CheckBoxModulo" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="3">
+            <Label Content="Lösung 1: " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label Name="LabelResult1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="4">
+            <Label Content="Lösung 2: " HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <Label Name="LabelResult2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </StackPanel>
 
-        <Label Name="LabelResult" Grid.Row="2"/>
-        <Button Name="ButtonCalculate" Content="Calculate" Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10" Click="ButtonCalculate_Click"/>
+        <Button Name="ButtonCalculate" Content="Calculate" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" Click="ButtonCalculate_Click"/>
     </Grid>
 </Window>

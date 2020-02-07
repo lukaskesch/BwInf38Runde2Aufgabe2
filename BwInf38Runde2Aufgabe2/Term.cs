@@ -37,18 +37,27 @@ namespace BwInf38Runde2Aufgabe2
     }
     public class FactorialOperator : Term
     {
-        //public FactorialOperator(double Input) : base(Input) { }
+        private long Number;
+        public FactorialOperator(long Input) : base() 
+        {
+            Number = Input;
+        }
 
-        //public override double GetResult()
-        //{
-        //    double result = 1;
-        //    while (Number != 1)
-        //    {
-        //        result *= Number;
-        //        Number--;
-        //    }
-        //    return base.GetResult();
-        //}
+        public override long GetResult()
+        {
+            long result = 1;
+            while (Number != 1)
+            {
+                result *= Number;
+                Number--;
+            }
+            return result;
+        }
+
+        public static bool IsCalculatable(Term Term1)
+        {
+            return true;
+        }
     }
 
     public abstract class DoubleInputOperator : Term
@@ -61,7 +70,6 @@ namespace BwInf38Runde2Aufgabe2
             Term1 = _Term1;
             Term2 = _Term2;
         }
-       
     }
 
     public class AddOperator : DoubleInputOperator
@@ -116,7 +124,21 @@ namespace BwInf38Runde2Aufgabe2
         }
         public override string PrintTerm()
         {
-            return "(" + Term1.PrintTerm() + "*" + Term2.PrintTerm() + ")";
+            return "(" + Term1.PrintTerm() + "/" + Term2.PrintTerm() + ")";
+        }
+    }
+
+    public class ModuloOperator : DoubleInputOperator
+    {
+        public ModuloOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
+
+        public override long GetResult()
+        {
+            return Term1.GetResult() % Term2.GetResult();
+        }
+        public override string PrintTerm()
+        {
+            return "(" + Term1.PrintTerm() + "%" + Term2.PrintTerm() + ")";
         }
     }
 
@@ -130,7 +152,12 @@ namespace BwInf38Runde2Aufgabe2
         }
         public override string PrintTerm()
         {
-            return "(" + Term1.PrintTerm() + "^(" + Term2.PrintTerm() + "))";
+            return "(" + Term1.PrintTerm() + ")^(" + Term2.PrintTerm() + ")";
+        }
+
+        public static bool IsCalculatable(Term Term1, Term Term2)
+        {
+            return true;
         }
     }
 }

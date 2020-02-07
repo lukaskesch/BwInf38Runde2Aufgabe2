@@ -22,7 +22,6 @@ namespace BwInf38Runde2Aufgabe2
     {
         int Number;
         int Digit;
-        int AbortCondition;
         public MainWindow()
         {
             InitializeComponent();
@@ -31,25 +30,24 @@ namespace BwInf38Runde2Aufgabe2
         private void ButtonCalculate_Click(object sender, RoutedEventArgs e)
         {
             Prepare();
-            AddOperator addOperator = new AddOperator(new AddOperator(2, 2), 4);
-            //MessageBox.Show(addOperator.GetResult().ToString());
-            PowerOperator powerOperator = new PowerOperator(5, 2);
-            MessageBox.Show(powerOperator.GetResult().ToString());
 
-            Calculation.CalculateTerm(0, 0);
+
         }
         private void Prepare()
         {
-            try
+            //try
             {
                 Number = int.Parse(TextBoxNumberToCalculate.Text);
                 Digit = int.Parse(TextBoxDigit.Text);
-                AbortCondition = DataProcessing.GetAbortCondition(Number, Digit);
+                Calculation.CalculateTerm(Number, Digit);
+                LabelResult1.Content = Calculation.GetFirstTerm();
+                LabelResult2.Content = Calculation.GetSecondTerm();
+                
             }
-            catch (Exception)
+            //catch (Exception)
             {
-                MessageBox.Show("Die eingegebenen Parameter konnten nicht entgegen genommen werden");
-                throw;
+                //MessageBox.Show("Die eingegebenen Parameter konnten nicht entgegen genommen werden");
+                //throw;
             }
         }
        

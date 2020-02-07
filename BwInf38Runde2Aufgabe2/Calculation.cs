@@ -23,8 +23,21 @@ namespace BwInf38Runde2Aufgabe2
     {
         static int Digit;
         static int GoalNumber;
+        static string StringTerm1 = string.Empty;
+        static string StringTerm2 = string.Empty;
+        static bool BoolModulo = false;
+        static bool GoalNumber1Reached = false;
+        static bool GoalNumber2Reached = false;
         static List<List<Term>> ListTerms = new List<List<Term>>();
         static List<TResult> ListResults = new List<TResult>();
+        public static string GetFirstTerm()
+        {
+            return StringTerm1;
+        }
+        public static string GetSecondTerm()
+        {
+            return StringTerm2;
+        }
         public static void CalculateTerm(int _GoalNumber, int _Digit)
         {
             GoalNumber = _GoalNumber;
@@ -38,17 +51,26 @@ namespace BwInf38Runde2Aufgabe2
             ListTerms[0].Add(FirstLiteral);
 
             //Erstelle für jede Ziffernlänge (alle) Terme
-            for (int nDigit = 0; nDigit < 100; nDigit++)
+            for (int nDigit = 1; nDigit < 100; nDigit++)
             {
-                //Lege Liste für nDigit an
-                ListTerms.Add(new List<Term>());
+                //Schaue ob GoalNumber1 schon erstellt wurde
+                if (!GoalNumber1Reached)
+                {
+                    //Lege Liste für nDigit an
+                    ListTerms.Add(new List<Term>());
 
-                //Erstelle Literal für nDigit
-                Literal OldLiteral = (Literal)ListTerms[nDigit - 1][0];
-                long OldLiteralValue = OldLiteral.GetResult();
-                long NewLiteralValue = OldLiteralValue * 10 + Digit;
-                Literal NewLiteral = new Literal(NewLiteralValue);
-                //ListTerms[nDigit].Add(NewLiteral); muss noch überprüft werden, ob wert nicht schon erreicht
+                    //Erstelle Literal für nDigit
+                    Literal OldLiteral = (Literal)ListTerms[nDigit - 1][0];
+                    long OldLiteralValue = OldLiteral.GetResult();
+                    long NewLiteralValue = OldLiteralValue * 10 + Digit;
+                    Literal NewLiteral = new Literal(NewLiteralValue);
+                    ListTerms[nDigit].Add(NewLiteral); //Muss theoretisch noch überprüft werden, ob wert nicht schon erreicht
+                }
+                else
+                {
+                    return;
+                }
+
 
                 //Gehe jede Ziffernlänge bis eins vor das Aktuelle durch
                 for (int DigitLenght = 0; DigitLenght < nDigit; DigitLenght++)
@@ -87,21 +109,51 @@ namespace BwInf38Runde2Aufgabe2
             //Addition
             NewTerm = new AddOperator(Term1, Term2);
             if (CheckTerm(NewTerm))
-            {
                 AddTermToLists(NewTerm,nDigit);
-            }
+            
 
             //Subtraction
+            NewTerm = new SubtractOperator(Term1, Term2);
+            if (CheckTerm(NewTerm))
+                AddTermToLists(NewTerm, nDigit);
+
 
             //Multiplication
+            NewTerm = new MultiplyOperator(Term1, Term2);
+            if (CheckTerm(NewTerm))
+                AddTermToLists(NewTerm, nDigit);
 
             //Division
+            int Remainder = (int)(Term1.GetResult() % Term2.GetResult());
+            if(Remainder == 0)
+            {
+                NewTerm = new DivisionOperator(Term1, Term2);
+                if (CheckTerm(NewTerm))
+                    AddTermToLists(NewTerm, nDigit);
+            }
 
             //Modulo
+            if (BoolModulo)
+            {
+                NewTerm = new ModuloOperator(Term1, Term2);
+                if (CheckTerm(NewTerm))
+                    AddTermToLists(NewTerm, nDigit);
+            }
 
-            //Power
+            //Wird nur ausgeführt, wenn GoalNumber1 schon erreicht wurde
+            if (GoalNumber1Reached)
+            {
+                //Power
+                if(PowerOperator.IsCalculatable(Term1, Term2))
+                {
+                    NewTerm = new PowerOperator(Term1, Term2);
+                    if (CheckTerm(NewTerm))
+                        AddTermToLists(NewTerm, nDigit);
+                }
 
-            //Factorial
+                
+            }
+
 
         }
         public static bool CheckTerm(Term NewTerm)
@@ -111,12 +163,28 @@ namespace BwInf38Runde2Aufgabe2
             {
                 if(OldTermResults.Result == TermResult)
                 {
+                    /*
+                     Sehr wichtig: es muss noch überprüft werden, ob ein neuer Term kleiner ist
+                     als der Alte, wenn er ein Term von Teil B ist
+                    */
                     return false;
                 }
             }
             if(TermResult == GoalNumber)
             {
-                //Beende
+                //Wenn bereits GoalNumber1 getroffen wurde, dann wurde jetzt GoalNumber2 getroffen
+                if (GoalNumber1Reached)
+                {
+                    GoalNumber2Reached = true;
+                    StringTerm2 = NewTerm.PrintTerm();
+                }
+                else
+                {
+                    //GoalNumber1 wurde getroffen
+                    GoalNumber1Reached = true;
+                    StringTerm1 = NewTerm.PrintTerm();
+                }
+                
 
                 return false;
             }
