@@ -20,8 +20,8 @@ namespace BwInf38Runde2Aufgabe2
     }
     public class Literal : Term
     {
-        int Value;
-        public Literal(int _Value) : base()
+        long Value;
+        public Literal(long _Value) : base()
         {
             Value = _Value;
         }

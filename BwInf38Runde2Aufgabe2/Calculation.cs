@@ -45,8 +45,8 @@ namespace BwInf38Runde2Aufgabe2
 
                 //Erstelle Literal für nDigit
                 Literal OldLiteral = (Literal)ListTerms[nDigit - 1][0];
-                int OldLiteralValue = OldLiteral.GetResult();
-                int NewLiteralValue = OldLiteralValue * 10 + Digit;
+                long OldLiteralValue = OldLiteral.GetResult();
+                long NewLiteralValue = OldLiteralValue * 10 + Digit;
                 Literal NewLiteral = new Literal(NewLiteralValue);
                 //ListTerms[nDigit].Add(NewLiteral); muss noch überprüft werden, ob wert nicht schon erreicht
 
