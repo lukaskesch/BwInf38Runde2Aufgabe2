@@ -75,16 +75,14 @@ namespace BwInf38Runde2Aufgabe2
                 //Gehe jede Ziffernlänge bis eins vor das Aktuelle durch
                 for (int DigitLenght = 0; DigitLenght < nDigit; DigitLenght++)
                 {
-                    //Für jede Ziffernlänge gehe alle ihre Terme durch
+                    //Für jede dieser Ziffernlänge gehe alle ihre Terme durch
                     for (int ElementsOfDigitLength = 0; ElementsOfDigitLength < ListTerms[DigitLenght].Count; ElementsOfDigitLength++)
                     {
-                        //Für jede dieser Terme verknüpfe sie mit mit nDigit-i
-                        int RemainingDigitDifference = nDigit - 1;
-                        RemainingDigitDifference = ListTerms[RemainingDigitDifference].Count;
-                        for (int ElementsOfRemainingDigitDifference = 0; ElementsOfRemainingDigitDifference < RemainingDigitDifference; ElementsOfRemainingDigitDifference++)
+                        //Für jede dieser Terme verknüpfe sie mit mit allen nDigit-DigitLenght Termen
+                        int RemainingDigitDifference = nDigit - DigitLenght;
+                        for (int ElementsOfRemainingDigitDifference = 0; ElementsOfRemainingDigitDifference < ListTerms[RemainingDigitDifference].Count; ElementsOfRemainingDigitDifference++)
                         {
-                            //Erstelle sinnvolle Terme
-                            //Überprüfe Term
+                            //Erstelle alle sinnvollen Terme aus den zwei aktuellen Termen
                             CreateTerms(DigitLenght,ElementsOfDigitLength, RemainingDigitDifference, ElementsOfRemainingDigitDifference);
                         }
                     }
@@ -170,7 +168,11 @@ namespace BwInf38Runde2Aufgabe2
                     return false;
                 }
             }
-            if(TermResult == GoalNumber)
+            if(TermResult == 0)
+            {
+                return false;
+            }
+            else if(TermResult == GoalNumber)
             {
                 //Wenn bereits GoalNumber1 getroffen wurde, dann wurde jetzt GoalNumber2 getroffen
                 if (GoalNumber1Reached)

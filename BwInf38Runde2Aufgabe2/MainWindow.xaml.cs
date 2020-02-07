@@ -29,12 +29,6 @@ namespace BwInf38Runde2Aufgabe2
 
         private void ButtonCalculate_Click(object sender, RoutedEventArgs e)
         {
-            Prepare();
-
-
-        }
-        private void Prepare()
-        {
             //try
             {
                 Number = int.Parse(TextBoxNumberToCalculate.Text);
@@ -42,7 +36,7 @@ namespace BwInf38Runde2Aufgabe2
                 Calculation.CalculateTerm(Number, Digit);
                 LabelResult1.Content = Calculation.GetFirstTerm();
                 LabelResult2.Content = Calculation.GetSecondTerm();
-                
+
             }
             //catch (Exception)
             {
@@ -50,6 +44,7 @@ namespace BwInf38Runde2Aufgabe2
                 //throw;
             }
         }
+       
        
     }
 }
