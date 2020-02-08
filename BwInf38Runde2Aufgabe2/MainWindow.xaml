@@ -36,6 +36,6 @@
             <Label Name="LabelResult2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </StackPanel>
 
-        <Button Name="ButtonCalculate" Content="Calculate" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" Click="ButtonCalculate_Click"/>
+        <Button Name="ButtonCalculate" Content="Berechnen" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" Click="ButtonCalculate_Click"/>
     </Grid>
 </Window>

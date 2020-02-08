@@ -22,11 +22,13 @@ namespace BwInf38Runde2Aufgabe2
     {
         int GoalNumber;
         int Digit;
+        int NeededNumberOfDigits1;
+        int NeededNumberOfDigits2;
         bool BoolModulo = false;
-        bool GoalNumber1Reached = false;
-        bool GoalNumber2Reached = false;
+        bool GoalNumber1Reached;
+        bool GoalNumber2Reached;
         List<List<Term>> ListTerms = new List<List<Term>>();
-        List<TResult> ListResults = new List<TResult>();
+        List<long> ListResults = new List<long>();
         public MainWindow()
         {
             InitializeComponent();
@@ -48,17 +50,21 @@ namespace BwInf38Runde2Aufgabe2
         {
             //try
             {
+                GoalNumber1Reached = false;
+                GoalNumber2Reached = false;
+                ListTerms = new List<List<Term>>();
+                ListResults = new List<long>();
                 GoalNumber = int.Parse(TextBoxNumberToCalculate.Text);
                 Digit = int.Parse(TextBoxDigit.Text);
                 CalculateTerm(1);
-                CalculateTerm(2);
-                
+                //CalculateTerm(2);
+
 
             }
             //catch (Exception)
             {
                 //MessageBox.Show("Die eingegebenen Parameter konnten nicht entgegen genommen werden");
-                //throw;
+
             }
         }
 
@@ -72,10 +78,10 @@ namespace BwInf38Runde2Aufgabe2
             ListTerms[0].Add(FirstLiteral);
 
             //Erstelle für jede Ziffernlänge (alle) Terme
-            for (int nDigit = 1; nDigit < 100; nDigit++)
+            for (int nDigit = 1; true; nDigit++)
             {
                 //Schaue ob GoalNumber1 schon erstellt wurde in Teil 1
-                if(Task == 1 && GoalNumber1Reached)
+                if (Task == 1 && GoalNumber1Reached)
                 {
                     return;
                 }
@@ -91,24 +97,25 @@ namespace BwInf38Runde2Aufgabe2
                     Literal NewLiteral = new Literal(NewLiteralValue);
                     ListTerms[nDigit].Add(NewLiteral); //Muss theoretisch noch überprüft werden, ob wert nicht schon erreicht
                 }
-               
 
 
-                //Gehe jede Ziffernlänge bis eins vor das Aktuelle durch
-                for (int DigitLenght = 0; DigitLenght < nDigit; DigitLenght++)
+                //Gehe Ziffernlänge bis zur Hälfte der aktuellen hoch
+                for (int DigitLenght = 0; DigitLenght < (nDigit + 1) / 2; DigitLenght++)
                 {
                     //Für jede dieser Ziffernlänge gehe alle ihre Terme durch
-                    for (int ElementsOfDigitLength = 0; ElementsOfDigitLength < ListTerms[DigitLenght].Count; ElementsOfDigitLength++)
+                    int UpperBound = ListTerms[DigitLenght].Count;
+                    for (int ElementsOfDigitLength = 0; ElementsOfDigitLength < UpperBound; ElementsOfDigitLength++)
                     {
+                        UpperBound = ListTerms[DigitLenght].Count;
                         //Für jede dieser Terme verknüpfe sie mit mit allen nDigit-DigitLenght Termen
-                        int RemainingDigitDifference = nDigit - DigitLenght;
+                        int RemainingDigitDifference = nDigit - DigitLenght - 1;
                         for (int ElementsOfRemainingDigitDifference = 0; ElementsOfRemainingDigitDifference < ListTerms[RemainingDigitDifference].Count; ElementsOfRemainingDigitDifference++)
                         {
                             //Erstelle alle sinnvollen Terme aus den zwei aktuellen Termen
-                            CreateTerms(DigitLenght, ElementsOfDigitLength, RemainingDigitDifference, ElementsOfRemainingDigitDifference, Task);
-                            
+                            CreateTerms(DigitLenght, ElementsOfDigitLength, RemainingDigitDifference, ElementsOfRemainingDigitDifference, nDigit, Task);
+
                             //Breche ab, wenn GoalNum2 erreicht
-                            if(Task == 2 && GoalNumber2Reached)
+                            if (Task == 2 && GoalNumber2Reached)
                             {
                                 return;
                             }
@@ -117,7 +124,7 @@ namespace BwInf38Runde2Aufgabe2
                 }
             }
         }
-        private void CreateTerms(int IndexA1, int IndexA2, int IndexB1, int IndexB2, int Task)
+        private void CreateTerms(int IndexA1, int IndexA2, int IndexB1, int IndexB2, int nDigit, int Task)
         {
             Term Term1 = ListTerms[IndexA1][IndexA2];
             Term Term2 = ListTerms[IndexB1][IndexB2];
@@ -130,31 +137,42 @@ namespace BwInf38Runde2Aufgabe2
             }
 
             Term NewTerm;
-            int nDigit = IndexA1 + IndexB1;
 
             //Addition
             NewTerm = new AddOperator(Term1, Term2);
             if (CheckTerm(NewTerm, Task))
-                AddTermToLists(NewTerm, nDigit);
+            {
+                ListTerms[nDigit].Add(NewTerm);
+                ListResults.Add(NewTerm.GetResult());
+            }
 
 
             //Subtraction
             NewTerm = new SubtractOperator(Term1, Term2);
             if (CheckTerm(NewTerm, Task))
-                AddTermToLists(NewTerm, nDigit);
+            {
+                ListTerms[nDigit].Add(NewTerm);
+                ListResults.Add(NewTerm.GetResult());
+            }
 
 
             //Multiplication
             NewTerm = new MultiplyOperator(Term1, Term2);
             if (CheckTerm(NewTerm, Task))
-                AddTermToLists(NewTerm, nDigit);
+            {
+                ListTerms[nDigit].Add(NewTerm);
+                ListResults.Add(NewTerm.GetResult());
+            }
 
             //Division
-            if (DivisionOperator.IsCalculatable(Term1,Term2))
+            if (DivisionOperator.IsCalculatable(Term1, Term2))
             {
                 NewTerm = new DivisionOperator(Term1, Term2);
                 if (CheckTerm(NewTerm, Task))
-                    AddTermToLists(NewTerm, nDigit);
+                {
+                    ListTerms[nDigit].Add(NewTerm);
+                    ListResults.Add(NewTerm.GetResult());
+                }
             }
 
             //Modulo
@@ -162,7 +180,10 @@ namespace BwInf38Runde2Aufgabe2
             {
                 NewTerm = new ModuloOperator(Term1, Term2);
                 if (CheckTerm(NewTerm, Task))
-                    AddTermToLists(NewTerm, nDigit);
+                {
+                    ListTerms[nDigit].Add(NewTerm);
+                    ListResults.Add(NewTerm.GetResult());
+                }
             }
 
             //Wird nur ausgeführt, wenn GoalNumber1 schon erreicht wurde
@@ -172,21 +193,23 @@ namespace BwInf38Runde2Aufgabe2
                 if (PowerOperator.IsCalculatable(Term1, Term2))
                 {
                     NewTerm = new PowerOperator(Term1, Term2);
-                    if (CheckTerm(NewTerm,2))
-                        AddTermToLists(NewTerm, nDigit);
+                    if (CheckTerm(NewTerm, 2))
+                    {
+                        ListTerms[nDigit].Add(NewTerm);
+                        ListResults.Add(NewTerm.GetResult());
+                    }
                 }
-
-
             }
 
 
         }
         private bool CheckTerm(Term NewTerm, int Task)
         {
+
             long TermResult = NewTerm.GetResult();
-            foreach (TResult OldTermResults in ListResults)
+            foreach (long OldTermResults in ListResults)
             {
-                if (OldTermResults.Result == TermResult)
+                if (OldTermResults == TermResult)
                 {
                     /*
                      Sehr wichtig: es muss noch überprüft werden, ob ein neuer Term kleiner ist
@@ -201,29 +224,22 @@ namespace BwInf38Runde2Aufgabe2
             }
             else if (TermResult == GoalNumber)
             {
-                
+
                 if (Task == 1 && !GoalNumber1Reached)
                 {
                     GoalNumber1Reached = true;
                     LabelResult1.Content = NewTerm.PrintTerm();
-                    
+
                 }
-                else if(Task == 2)
+                else if (Task == 2)
                 {
                     //GoalNumber2 wurde getroffen
                     GoalNumber2Reached = true;
                     LabelResult1.Content = NewTerm.PrintTerm();
-                    
+
                 }
             }
             return true;
-        }
-        private void AddTermToLists(Term NewTerm, int nDigit)
-        {
-            //Füge neuen Term beider Listen hinzu
-            ListTerms[nDigit].Add(NewTerm);
-            int Index = ListTerms[nDigit].Count - 1;
-            ListResults.Add(new TResult(NewTerm.GetResult(), nDigit, Index));
         }
     }
 }
