@@ -70,12 +70,20 @@ namespace BwInf38Runde2Aufgabe2
 
         private void CalculateTerm(int Task)
         {
-            //Erstelle den ersten Digit
-            Literal FirstLiteral = new Literal(Digit);
+            if (Task == 1)
+            {
+                //Erstelle den ersten Digit
+                Literal FirstLiteral = new Literal(Digit);
 
-            //Lege eine Liste an Index 0 an und speicher in ihr First Literal
-            ListTerms.Add(new List<Term>());
-            ListTerms[0].Add(FirstLiteral);
+                //Lege eine Liste an Index 0 an und speicher in ihr First Literal
+                ListTerms.Add(new List<Term>());
+                ListTerms[0].Add(FirstLiteral);
+            }
+            else if (Task == 2)
+            {
+                //Gehe durch jeden Term und Wende Fakultät an
+            }
+
 
             //Erstelle für jede Ziffernlänge (alle) Terme
             for (int nDigit = 1; true; nDigit++)
@@ -83,6 +91,7 @@ namespace BwInf38Runde2Aufgabe2
                 //Schaue ob GoalNumber1 schon erstellt wurde in Teil 1
                 if (Task == 1 && GoalNumber1Reached)
                 {
+                    NeededNumberOfDigits1 = nDigit;
                     return;
                 }
                 else if (Task == 1)
@@ -106,7 +115,9 @@ namespace BwInf38Runde2Aufgabe2
                     int UpperBound = ListTerms[DigitLenght].Count;
                     for (int ElementsOfDigitLength = 0; ElementsOfDigitLength < UpperBound; ElementsOfDigitLength++)
                     {
-                        UpperBound = ListTerms[DigitLenght].Count;
+                        //Wende Fakultät für jeden an
+
+
                         //Für jede dieser Terme verknüpfe sie mit mit allen nDigit-DigitLenght Termen
                         int RemainingDigitDifference = nDigit - DigitLenght - 1;
                         for (int ElementsOfRemainingDigitDifference = 0; ElementsOfRemainingDigitDifference < ListTerms[RemainingDigitDifference].Count; ElementsOfRemainingDigitDifference++)
@@ -117,6 +128,7 @@ namespace BwInf38Runde2Aufgabe2
                             //Breche ab, wenn GoalNum2 erreicht
                             if (Task == 2 && GoalNumber2Reached)
                             {
+                                NeededNumberOfDigits2 = nDigit + 1;
                                 return;
                             }
                         }
@@ -126,6 +138,7 @@ namespace BwInf38Runde2Aufgabe2
         }
         private void CreateTerms(int IndexA1, int IndexA2, int IndexB1, int IndexB2, int nDigit, int Task)
         {
+            Term NewTerm;
             Term Term1 = ListTerms[IndexA1][IndexA2];
             Term Term2 = ListTerms[IndexB1][IndexB2];
 
@@ -136,8 +149,6 @@ namespace BwInf38Runde2Aufgabe2
                 Term2 = ListTerms[IndexA1][IndexA2];
             }
 
-            Term NewTerm;
-
             //Addition
             NewTerm = new AddOperator(Term1, Term2);
             if (CheckTerm(NewTerm, Task))
@@ -146,7 +157,6 @@ namespace BwInf38Runde2Aufgabe2
                 ListResults.Add(NewTerm.GetResult());
             }
 
-
             //Subtraction
             NewTerm = new SubtractOperator(Term1, Term2);
             if (CheckTerm(NewTerm, Task))
@@ -154,7 +164,6 @@ namespace BwInf38Runde2Aufgabe2
                 ListTerms[nDigit].Add(NewTerm);
                 ListResults.Add(NewTerm.GetResult());
             }
-
 
             //Multiplication
             NewTerm = new MultiplyOperator(Term1, Term2);
@@ -200,12 +209,9 @@ namespace BwInf38Runde2Aufgabe2
                     }
                 }
             }
-
-
         }
         private bool CheckTerm(Term NewTerm, int Task)
         {
-
             long TermResult = NewTerm.GetResult();
             foreach (long OldTermResults in ListResults)
             {
@@ -224,9 +230,9 @@ namespace BwInf38Runde2Aufgabe2
             }
             else if (TermResult == GoalNumber)
             {
-
                 if (Task == 1 && !GoalNumber1Reached)
                 {
+                    //GoalNumber1 wurde getroffen
                     GoalNumber1Reached = true;
                     LabelResult1.Content = NewTerm.PrintTerm();
 
