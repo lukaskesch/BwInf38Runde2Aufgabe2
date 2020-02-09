@@ -32,7 +32,9 @@ namespace BwInf38Runde2Aufgabe2
         bool GoalNumber1Reached;
         bool GoalNumber2Reached;
         List<List<Term>> ListTerms = new List<List<Term>>();
-        List<long> ListResults = new List<long>();
+        long[] ArrayResults = new long[500000];
+        long IndexArrayResults;
+        //List<long> ListResults = new List<long>();
         Stopwatch stopwatch = new Stopwatch();
         public MainWindow()
         {
@@ -60,7 +62,10 @@ namespace BwInf38Runde2Aufgabe2
                 GoalNumber1Reached = false;
                 GoalNumber2Reached = false;
                 ListTerms = new List<List<Term>>();
-                ListResults = new List<long>();
+
+                IndexArrayResults = 0;
+                ArrayResults = new long[500000];
+                //ListResults = new List<long>();
 
                 BoolModulo = (bool)CheckBoxModulo.IsChecked;
                 GoalNumber = int.Parse(TextBoxNumberToCalculate.Text);
@@ -72,7 +77,7 @@ namespace BwInf38Runde2Aufgabe2
                 CalculationTime /= 1000;
 
                 LabelResult1Time.Content = CalculationTime.ToString();
-                LabelResult1NeededTerms.Content = ListResults.Count.ToString();
+                LabelResult1NeededTerms.Content = ArrayResults.Length.ToString();
                 LabelResult1PossibleTerms.Content = NumberOfPossibleTerms.ToString();
                 LabelResult1nDigits.Content = NeededNumberOfDigits1.ToString();
 
@@ -179,7 +184,8 @@ namespace BwInf38Runde2Aufgabe2
             if (CheckTerm(NewTerm, Task))
             {
                 ListTerms[nDigit].Add(NewTerm);
-                ListResults.Add(NewTerm.GetResult());
+                ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+                //ListResults.Add(NewTerm.GetResult());
             }
 
             //Subtraction
@@ -187,7 +193,8 @@ namespace BwInf38Runde2Aufgabe2
             if (CheckTerm(NewTerm, Task))
             {
                 ListTerms[nDigit].Add(NewTerm);
-                ListResults.Add(NewTerm.GetResult());
+                ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+
             }
 
             //Multiplication
@@ -195,7 +202,8 @@ namespace BwInf38Runde2Aufgabe2
             if (CheckTerm(NewTerm, Task))
             {
                 ListTerms[nDigit].Add(NewTerm);
-                ListResults.Add(NewTerm.GetResult());
+                ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+
             }
 
             //Division
@@ -205,7 +213,8 @@ namespace BwInf38Runde2Aufgabe2
                 if (CheckTerm(NewTerm, Task))
                 {
                     ListTerms[nDigit].Add(NewTerm);
-                    ListResults.Add(NewTerm.GetResult());
+                    ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+
                 }
             }
 
@@ -216,7 +225,8 @@ namespace BwInf38Runde2Aufgabe2
                 if (CheckTerm(NewTerm, Task))
                 {
                     ListTerms[nDigit].Add(NewTerm);
-                    ListResults.Add(NewTerm.GetResult());
+                    ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+
                 }
             }
 
@@ -230,7 +240,8 @@ namespace BwInf38Runde2Aufgabe2
                     if (CheckTerm(NewTerm, 2))
                     {
                         ListTerms[nDigit].Add(NewTerm);
-                        ListResults.Add(NewTerm.GetResult());
+                        ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+
                     }
                 }
             }
@@ -238,9 +249,9 @@ namespace BwInf38Runde2Aufgabe2
         private bool CheckTerm(Term NewTerm, int Task)
         {
             long TermResult = NewTerm.GetResult();
-            for (int i = 0; i < ListResults.Count; i++)
+            for (int i = 0; i < IndexArrayResults; i++)
             {
-                if (ListResults[i] == TermResult)
+                if (ArrayResults[i] == TermResult)
                 {
                     return false;
                 }
