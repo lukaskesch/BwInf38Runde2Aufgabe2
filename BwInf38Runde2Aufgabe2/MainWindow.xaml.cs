@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,15 +21,19 @@ namespace BwInf38Runde2Aufgabe2
     /// </summary>
     public partial class MainWindow : Window
     {
+        double CalculationTime;
         int GoalNumber;
         int Digit;
         int NeededNumberOfDigits1;
         int NeededNumberOfDigits2;
+        long NumberOfPossibleTerms;
+        bool CalculateJustA;
         bool BoolModulo = false;
         bool GoalNumber1Reached;
         bool GoalNumber2Reached;
         List<List<Term>> ListTerms = new List<List<Term>>();
         List<long> ListResults = new List<long>();
+        Stopwatch stopwatch = new Stopwatch();
         public MainWindow()
         {
             InitializeComponent();
@@ -46,18 +51,40 @@ namespace BwInf38Runde2Aufgabe2
             public int Column;
         }
 
-        private void ButtonCalculate_Click(object sender, RoutedEventArgs e)
+        private void ButtonCalculateAB_Click(object sender, RoutedEventArgs e)
         {
             //try
             {
+                BoolModulo = false;
+                NumberOfPossibleTerms = 0;
                 GoalNumber1Reached = false;
                 GoalNumber2Reached = false;
                 ListTerms = new List<List<Term>>();
                 ListResults = new List<long>();
+
+                BoolModulo = (bool)CheckBoxModulo.IsChecked;
                 GoalNumber = int.Parse(TextBoxNumberToCalculate.Text);
                 Digit = int.Parse(TextBoxDigit.Text);
+
+                stopwatch.Restart();
                 CalculateTerm(1);
-                //CalculateTerm(2);
+                CalculationTime = stopwatch.ElapsedMilliseconds;
+                CalculationTime /= 1000;
+
+                LabelResult1Time.Content = CalculationTime.ToString();
+                LabelResult1NeededTerms.Content = ListResults.Count.ToString();
+                LabelResult1PossibleTerms.Content = NumberOfPossibleTerms.ToString();
+                LabelResult1nDigits.Content = NeededNumberOfDigits1.ToString();
+
+                if (!CalculateJustA)
+                {
+                    stopwatch.Restart();
+                    //CalculateTerm(2);
+                    CalculationTime = stopwatch.ElapsedMilliseconds;
+                    stopwatch.Stop();
+                    CalculateJustA = false;
+                }
+
 
 
             }
@@ -79,10 +106,7 @@ namespace BwInf38Runde2Aufgabe2
                 ListTerms.Add(new List<Term>());
                 ListTerms[0].Add(FirstLiteral);
             }
-            else if (Task == 2)
-            {
-                //Gehe durch jeden Term und Wende Fakultät an
-            }
+
 
 
             //Erstelle für jede Ziffernlänge (alle) Terme
@@ -149,6 +173,7 @@ namespace BwInf38Runde2Aufgabe2
                 Term2 = ListTerms[IndexA1][IndexA2];
             }
 
+
             //Addition
             NewTerm = new AddOperator(Term1, Term2);
             if (CheckTerm(NewTerm, Task))
@@ -213,17 +238,24 @@ namespace BwInf38Runde2Aufgabe2
         private bool CheckTerm(Term NewTerm, int Task)
         {
             long TermResult = NewTerm.GetResult();
-            foreach (long OldTermResults in ListResults)
+            for (int i = 0; i < ListResults.Count; i++)
             {
-                if (OldTermResults == TermResult)
+                if (ListResults[i] == TermResult)
                 {
-                    /*
-                     Sehr wichtig: es muss noch überprüft werden, ob ein neuer Term kleiner ist
-                     als der Alte, wenn er ein Term von Teil B ist
-                    */
                     return false;
                 }
             }
+            //foreach (long OldTermResults in ListResults)
+            //{
+            //    if (OldTermResults == TermResult)
+            //    {
+            //        /*
+            //         Sehr wichtig: es muss noch überprüft werden, ob ein neuer Term kleiner ist
+            //         als der Alte, wenn er ein Term von Teil B ist
+            //        */
+            //        return false;
+            //    }
+            //}
             if (TermResult == 0)
             {
                 return false;
@@ -234,18 +266,30 @@ namespace BwInf38Runde2Aufgabe2
                 {
                     //GoalNumber1 wurde getroffen
                     GoalNumber1Reached = true;
-                    LabelResult1.Content = NewTerm.PrintTerm();
+                    LabelResult1Term.Content = NewTerm.PrintTerm();
 
                 }
                 else if (Task == 2)
                 {
                     //GoalNumber2 wurde getroffen
                     GoalNumber2Reached = true;
-                    LabelResult1.Content = NewTerm.PrintTerm();
+                    //LabelResult1.Content = NewTerm.PrintTerm();
 
                 }
             }
             return true;
+        }
+        private long GetNumberOfPossibleTerms(int Task, int nDigit)
+        {
+            return 0;
+        }
+
+
+
+        private void ButtonCalculateA_Click(object sender, RoutedEventArgs e)
+        {
+            CalculateJustA = true;
+            ButtonCalculateAB_Click(sender, e);
         }
     }
 }

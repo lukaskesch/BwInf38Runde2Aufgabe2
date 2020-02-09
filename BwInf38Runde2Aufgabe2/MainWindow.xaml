@@ -5,37 +5,86 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BwInf38Runde2Aufgabe2"
         mc:Ignorable="d"
-        Title="MainWindow" Height="250" SizeToContent="Width" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+        Title="BwInf 38 Runde 2 Aufgabe 2" Height="360" Width="500"  WindowStartupLocation="CenterScreen">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal" Grid.Row="0">
-            <Label Content="Zu erstellende Zahl: " HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Name="TextBoxNumberToCalculate" Width="100" Margin="0 8 10 8"/>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="1.4*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical">
+            <GroupBox Header="Eingabe" Grid.Column="0" Margin="5">
+                <StackPanel Orientation="Vertical">
+                    <Label Content="Zu erstellende Zahl: "/>
+                    <TextBox Name="TextBoxNumberToCalculate" Width="100" Margin="3 8 10 8" HorizontalAlignment="Left"/>
+                    <Separator/>
+
+                    <Label Content="Zu verwendende Ziffer: " />
+                    <TextBox Name="TextBoxDigit"  Width="15" Margin="3 8" HorizontalAlignment="Left"/>
+                    <Separator/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Verwende Modulo:" />
+                        <CheckBox Name="CheckBoxModulo" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="1">
-            <Label Content="Zu verwendende Ziffer: " HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <TextBox Name="TextBoxDigit" Grid.Column="1" Width="15" Margin="0 8"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="2">
-            <Label Content="Verwende Modulo:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <CheckBox Name="CheckBoxModulo" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="3">
-            <Label Content="Lösung 1: " HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Name="LabelResult1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="4">
-            <Label Content="Lösung 2: " HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            <Label Name="LabelResult2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
+            <Button Name="ButtonCalculateA" Content="Berechne A" Margin="5" VerticalAlignment="Bottom" Click="ButtonCalculateA_Click"/>
+            <Button Name="ButtonCalculateAB" Content="Berechne A und B" Margin="5" VerticalAlignment="Bottom" Click="ButtonCalculateAB_Click"/>
         </StackPanel>
 
-        <Button Name="ButtonCalculate" Content="Berechnen" Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5" Click="ButtonCalculate_Click"/>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <GroupBox Header="Lösung A" Grid.Row="0" Margin="0 5 5 5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0"  Content="Rechenzeit in Sek: " HorizontalAlignment="Left"/>
+                    <Label Grid.Row="0" Name="LabelResult1Time" HorizontalAlignment="Right"/>
+                    <Label Grid.Row="1" Content="Anzahl an erstellten Termen: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="1" Name="LabelResult1NeededTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="2" Content="Anzahl an möglichen Termen: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="2" Name="LabelResult1PossibleTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="3" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="3" Name="LabelResult1nDigits" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="4" Content="Ausgabe: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="4" Name="LabelResult1Term" HorizontalContentAlignment="Right"/>
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Lösung B" Grid.Row="1" Margin="0 0 5 5">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0"  Content="Rechenzeit in Sek: " HorizontalAlignment="Left"/>
+                    <Label Grid.Row="0" Name="LabelResult2Time" HorizontalAlignment="Right"/>
+                    <Label Grid.Row="1" Content="Anzahl an erstellten Termen: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="1" Name="LabelResult2NeededTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="2" Content="Anzahl an möglichen Termen: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="2" Name="LabelResult2PossibleTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="3" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="3" Name="LabelResult2nDigits" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="4" Content="Ausgabe: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="4" Name="LabelResult2Term" HorizontalContentAlignment="Right"/>
+                </Grid>
+            </GroupBox>
+        </Grid>
+
+
+
+
     </Grid>
 </Window>
