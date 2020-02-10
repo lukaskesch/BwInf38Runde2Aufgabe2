@@ -33,9 +33,9 @@ namespace BwInf38Runde2Aufgabe2
         bool GoalNumber1Reached;
         bool GoalNumber2Reached;
         List<List<Term>> ListTerms = new List<List<Term>>();
-        long[] ArrayResults = new long[500000];
-        long IndexArrayResults;
+
         //List<long> ListResults = new List<long>();
+        SortedList<long, byte> ListResults = new SortedList<long, byte>();
         Stopwatch stopwatch = new Stopwatch();
         public MainWindow()
         {
@@ -65,9 +65,7 @@ namespace BwInf38Runde2Aufgabe2
                 GoalNumber1Reached = false;
                 GoalNumber2Reached = false;
                 ListTerms = new List<List<Term>>();
-
-                IndexArrayResults = 0;
-                ArrayResults = new long[500000];
+                ListResults = new SortedList<long, byte>();
                 //ListResults = new List<long>();
 
                 BoolModulo = (bool)CheckBoxModulo.IsChecked;
@@ -86,7 +84,7 @@ namespace BwInf38Runde2Aufgabe2
                 CalculationTime /= 1000;
 
                 LabelResult1Time.Content = CalculationTime.ToString();
-                LabelResult1NeededTerms.Content = IndexArrayResults.ToString();
+                LabelResult1NeededTerms.Content = ListResults.Count.ToString();
                 LabelResult1DeletedTerms.Content = NumberOfDeletedTerms.ToString();
                 LabelResult1nDigits.Content = NeededNumberOfDigits1.ToString();
                 LabelResult1nDigits.Content = (PercentOfList / NumberOfDeletedTerms).ToString();
@@ -194,7 +192,7 @@ namespace BwInf38Runde2Aufgabe2
             if (CheckTerm(NewTerm, Task))
             {
                 ListTerms[nDigit].Add(NewTerm);
-                ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+                ListResults.Add(NewTerm.GetResult(), 0);
                 //ListResults.Add(NewTerm.GetResult());
             }
 
@@ -203,7 +201,7 @@ namespace BwInf38Runde2Aufgabe2
             if (CheckTerm(NewTerm, Task))
             {
                 ListTerms[nDigit].Add(NewTerm);
-                ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+                ListResults.Add(NewTerm.GetResult(), 0);
 
             }
 
@@ -212,7 +210,7 @@ namespace BwInf38Runde2Aufgabe2
             if (CheckTerm(NewTerm, Task))
             {
                 ListTerms[nDigit].Add(NewTerm);
-                ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+                ListResults.Add(NewTerm.GetResult(), 0);
 
             }
 
@@ -223,7 +221,7 @@ namespace BwInf38Runde2Aufgabe2
                 if (CheckTerm(NewTerm, Task))
                 {
                     ListTerms[nDigit].Add(NewTerm);
-                    ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+                    ListResults.Add(NewTerm.GetResult(), 0);
 
                 }
             }
@@ -235,7 +233,7 @@ namespace BwInf38Runde2Aufgabe2
                 if (CheckTerm(NewTerm, Task))
                 {
                     ListTerms[nDigit].Add(NewTerm);
-                    ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+                    ListResults.Add(NewTerm.GetResult(), 0);
                 }
             }
 
@@ -249,7 +247,7 @@ namespace BwInf38Runde2Aufgabe2
                     if (CheckTerm(NewTerm, 2))
                     {
                         ListTerms[nDigit].Add(NewTerm);
-                        ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
+                        ListResults.Add(NewTerm.GetResult(), 0);
 
                     }
                 }
@@ -258,27 +256,13 @@ namespace BwInf38Runde2Aufgabe2
         private bool CheckTerm(Term NewTerm, int Task)
         {
             long TermResult = NewTerm.GetResult();
-            for (int i = 0; i < IndexArrayResults; i++)
+            if (ListResults.ContainsKey(TermResult))
             {
-                if (ArrayResults[i] == TermResult)
-                {
-                   // PercentOfList += Math.Round(((double)i / (double)IndexArrayResults) * 100) / 100;
-                    PercentOfList += ((double)i / (double)IndexArrayResults) ;
-                    NumberOfDeletedTerms++;
-                    return false;
-                }
+                NumberOfDeletedTerms++;
+                return false;
             }
-            //foreach (long OldTermResults in ListResults)
-            //{
-            //    if (OldTermResults == TermResult)
-            //    {
-            //        /*
-            //         Sehr wichtig: es muss noch überprüft werden, ob ein neuer Term kleiner ist
-            //         als der Alte, wenn er ein Term von Teil B ist
-            //        */
-            //        return false;
-            //    }
-            //}
+
+
             if (TermResult == 0)
             {
                 NumberOfDeletedTerms++;
