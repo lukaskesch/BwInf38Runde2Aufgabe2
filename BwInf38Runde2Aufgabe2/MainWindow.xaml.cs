@@ -27,6 +27,7 @@ namespace BwInf38Runde2Aufgabe2
         int NeededNumberOfDigits1;
         int NeededNumberOfDigits2;
         long NumberOfDeletedTerms;
+        double PercentOfList;
         bool CalculateJustA;
         bool BoolModulo = false;
         bool GoalNumber1Reached;
@@ -60,6 +61,7 @@ namespace BwInf38Runde2Aufgabe2
             {
                 BoolModulo = false;
                 NumberOfDeletedTerms = 0;
+                PercentOfList = 0;
                 GoalNumber1Reached = false;
                 GoalNumber2Reached = false;
                 ListTerms = new List<List<Term>>();
@@ -87,6 +89,7 @@ namespace BwInf38Runde2Aufgabe2
                 LabelResult1NeededTerms.Content = IndexArrayResults.ToString();
                 LabelResult1DeletedTerms.Content = NumberOfDeletedTerms.ToString();
                 LabelResult1nDigits.Content = NeededNumberOfDigits1.ToString();
+                LabelResult1nDigits.Content = (PercentOfList / NumberOfDeletedTerms).ToString();
 
                 if (!CalculateJustA)
                 {
@@ -259,6 +262,8 @@ namespace BwInf38Runde2Aufgabe2
             {
                 if (ArrayResults[i] == TermResult)
                 {
+                   // PercentOfList += Math.Round(((double)i / (double)IndexArrayResults) * 100) / 100;
+                    PercentOfList += ((double)i / (double)IndexArrayResults) ;
                     NumberOfDeletedTerms++;
                     return false;
                 }
