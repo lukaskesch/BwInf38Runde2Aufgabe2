@@ -37,7 +37,7 @@ namespace BwInf38Runde2Aufgabe2
     public class FactorialOperator : Term
     {
         private long Number;
-        public FactorialOperator(long Input) : base() 
+        public FactorialOperator(long Input) : base()
         {
             Number = Input;
         }
@@ -77,7 +77,7 @@ namespace BwInf38Runde2Aufgabe2
 
         public override long GetResult()
         {
-            return  Term1.GetResult() + Term2.GetResult();
+            return Term1.GetResult() + Term2.GetResult();
         }
         public override string PrintTerm()
         {
@@ -128,7 +128,7 @@ namespace BwInf38Runde2Aufgabe2
         public static bool IsCalculatable(Term Term1, Term Term2)
         {
             int Remainder = (int)(Term1.GetResult() % Term2.GetResult());
-            if(Remainder == 0)
+            if (Remainder == 0)
             {
                 return true;
             }
@@ -151,6 +151,17 @@ namespace BwInf38Runde2Aufgabe2
         {
             return "(" + Term1.PrintTerm() + "%" + Term2.PrintTerm() + ")";
         }
+        public static bool IsCalculatable(Term Term2)
+        {
+            if (Term2.GetResult() == 0)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 
     public class PowerOperator : DoubleInputOperator
@@ -168,7 +179,8 @@ namespace BwInf38Runde2Aufgabe2
 
         public static bool IsCalculatable(Term Term1, Term Term2)
         {
-            return true;
+            long Dummy;
+            return long.TryParse(Math.Pow(Term1.GetResult(), Term2.GetResult()).ToString(), out Dummy);
         }
     }
 }

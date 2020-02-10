@@ -28,7 +28,7 @@ namespace BwInf38Runde2Aufgabe2
         int NeededNumberOfDigits2;
         long NumberOfDeletedTerms;
         double PercentOfList;
-        bool CalculateJustA;
+        bool CalculateJustA = false;
         bool BoolModulo = false;
         bool GoalNumber1Reached;
         bool GoalNumber2Reached;
@@ -42,18 +42,7 @@ namespace BwInf38Runde2Aufgabe2
             InitializeComponent();
             TextBoxDigit.Text = 1.ToString();
         }
-        struct TResult
-        {
-            public TResult(long _Result, int _Row, int _Column)
-            {
-                Result = _Result;
-                Row = _Row;
-                Column = _Column;
-            }
-            public long Result;
-            public int Row;
-            public int Column;
-        }
+
 
         private void ButtonCalculateAB_Click(object sender, RoutedEventArgs e)
         {
@@ -89,13 +78,13 @@ namespace BwInf38Runde2Aufgabe2
                 LabelResult1nDigits.Content = NeededNumberOfDigits1.ToString();
                 LabelResult1nDigits.Content = (PercentOfList / NumberOfDeletedTerms).ToString();
 
-                if (!CalculateJustA)
+                if (sender != null)
                 {
                     stopwatch.Restart();
-                    //CalculateTerm(2);
+                    CalculateTerm(2);
                     CalculationTime = stopwatch.ElapsedMilliseconds;
                     stopwatch.Stop();
-                    CalculateJustA = false;
+
                 }
 
 
@@ -142,6 +131,11 @@ namespace BwInf38Runde2Aufgabe2
                     long NewLiteralValue = OldLiteralValue * 10 + Digit;
                     Literal NewLiteral = new Literal(NewLiteralValue);
                     ListTerms[nDigit].Add(NewLiteral); //Muss theoretisch noch überprüft werden, ob wert nicht schon erreicht
+                }
+                else if (Task == 2 && NeededNumberOfDigits1 < nDigit)
+                {
+                    LabelResult2Term.Content = "Keine bessere Lösung gefunden";
+                    return;
                 }
 
 
@@ -193,7 +187,6 @@ namespace BwInf38Runde2Aufgabe2
             {
                 ListTerms[nDigit].Add(NewTerm);
                 ListResults.Add(NewTerm.GetResult(), 0);
-                //ListResults.Add(NewTerm.GetResult());
             }
 
             //Subtraction
@@ -202,7 +195,6 @@ namespace BwInf38Runde2Aufgabe2
             {
                 ListTerms[nDigit].Add(NewTerm);
                 ListResults.Add(NewTerm.GetResult(), 0);
-
             }
 
             //Multiplication
@@ -211,7 +203,6 @@ namespace BwInf38Runde2Aufgabe2
             {
                 ListTerms[nDigit].Add(NewTerm);
                 ListResults.Add(NewTerm.GetResult(), 0);
-
             }
 
             //Division
@@ -222,7 +213,6 @@ namespace BwInf38Runde2Aufgabe2
                 {
                     ListTerms[nDigit].Add(NewTerm);
                     ListResults.Add(NewTerm.GetResult(), 0);
-
                 }
             }
 
@@ -230,7 +220,7 @@ namespace BwInf38Runde2Aufgabe2
             if (BoolModulo)
             {
                 NewTerm = new ModuloOperator(Term1, Term2);
-                if (CheckTerm(NewTerm, Task))
+                if (CheckTerm(NewTerm, Task) && ModuloOperator.IsCalculatable(Term2))
                 {
                     ListTerms[nDigit].Add(NewTerm);
                     ListResults.Add(NewTerm.GetResult(), 0);
@@ -244,7 +234,7 @@ namespace BwInf38Runde2Aufgabe2
                 if (PowerOperator.IsCalculatable(Term1, Term2))
                 {
                     NewTerm = new PowerOperator(Term1, Term2);
-                    if (CheckTerm(NewTerm, 2))
+                    if (CheckTerm(NewTerm, Task))
                     {
                         ListTerms[nDigit].Add(NewTerm);
                         ListResults.Add(NewTerm.GetResult(), 0);
@@ -261,9 +251,7 @@ namespace BwInf38Runde2Aufgabe2
                 NumberOfDeletedTerms++;
                 return false;
             }
-
-
-            if (TermResult == 0)
+            else if (TermResult == 0)
             {
                 NumberOfDeletedTerms++;
                 return false;
@@ -281,7 +269,7 @@ namespace BwInf38Runde2Aufgabe2
                 {
                     //GoalNumber2 wurde getroffen
                     GoalNumber2Reached = true;
-                    //LabelResult1.Content = NewTerm.PrintTerm();
+                    LabelResult2Term.Content = NewTerm.PrintTerm();
 
                 }
             }
@@ -296,10 +284,9 @@ namespace BwInf38Runde2Aufgabe2
 
         private void ButtonCalculateA_Click(object sender, RoutedEventArgs e)
         {
-            CalculateJustA = true;
-            ButtonCalculateAB_Click(sender, e);
+            //CalculateJustA = true;
+            ButtonCalculateAB_Click(null, e);
         }
-
         private void DigitPlus_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -316,7 +303,6 @@ namespace BwInf38Runde2Aufgabe2
                 return;
             }
         }
-
         private void DigitMinus_Click(object sender, RoutedEventArgs e)
         {
             try
