@@ -18,9 +18,12 @@
                     <Label Content="Zu erstellende Zahl: "/>
                     <TextBox Name="TextBoxNumberToCalculate" Width="100" Margin="3 8 10 8" HorizontalAlignment="Left"/>
                     <Separator/>
-
                     <Label Content="Zu verwendende Ziffer: " />
-                    <TextBox Name="TextBoxDigit"  Width="15" Margin="3 8" HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBox Name="TextBoxDigit"  Width="15" Margin="3 8" HorizontalAlignment="Left"/>
+                        <Button Name="DigitMinus" Content="-" Width="15" Height="17" Click="DigitMinus_Click"/>
+                        <Button Name="DigitPlus" Content="+" Width="15" Height="17" Click="DigitPlus_Click"/>
+                    </StackPanel>
                     <Separator/>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Verwende Modulo:" />
@@ -50,10 +53,10 @@
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0"  Content="Rechenzeit in Sek: " HorizontalAlignment="Left"/>
                     <Label Grid.Row="0" Name="LabelResult1Time" HorizontalAlignment="Right"/>
-                    <Label Grid.Row="1" Content="Anzahl an erstellten Termen: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="1" Content="Anzahl an gespeicherten Termen: " HorizontalContentAlignment="Left"/>
                     <Label Grid.Row="1" Name="LabelResult1NeededTerms" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="2" Content="Anzahl an möglichen Termen: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="2" Name="LabelResult1PossibleTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="2" Content="Anzahl an verworfenen Termen: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="2" Name="LabelResult1DeletedTerms" HorizontalContentAlignment="Right"/>
                     <Label Grid.Row="3" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
                     <Label Grid.Row="3" Name="LabelResult1nDigits" HorizontalContentAlignment="Right"/>
                     <Label Grid.Row="4" Content="Ausgabe: " HorizontalContentAlignment="Left"/>

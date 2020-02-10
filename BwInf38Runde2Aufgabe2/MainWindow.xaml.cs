@@ -26,7 +26,7 @@ namespace BwInf38Runde2Aufgabe2
         int Digit;
         int NeededNumberOfDigits1;
         int NeededNumberOfDigits2;
-        long NumberOfPossibleTerms;
+        long NumberOfDeletedTerms;
         bool CalculateJustA;
         bool BoolModulo = false;
         bool GoalNumber1Reached;
@@ -39,6 +39,7 @@ namespace BwInf38Runde2Aufgabe2
         public MainWindow()
         {
             InitializeComponent();
+            TextBoxDigit.Text = 1.ToString();
         }
         struct TResult
         {
@@ -58,7 +59,7 @@ namespace BwInf38Runde2Aufgabe2
             //try
             {
                 BoolModulo = false;
-                NumberOfPossibleTerms = 0;
+                NumberOfDeletedTerms = 0;
                 GoalNumber1Reached = false;
                 GoalNumber2Reached = false;
                 ListTerms = new List<List<Term>>();
@@ -71,14 +72,20 @@ namespace BwInf38Runde2Aufgabe2
                 GoalNumber = int.Parse(TextBoxNumberToCalculate.Text);
                 Digit = int.Parse(TextBoxDigit.Text);
 
+                if (Digit < 1 || Digit > 9)
+                {
+                    MessageBox.Show("Die eingegebenen Parameter konnten nicht entgegen genommen werden");
+                    return;
+                }
+
                 stopwatch.Restart();
                 CalculateTerm(1);
                 CalculationTime = stopwatch.ElapsedMilliseconds;
                 CalculationTime /= 1000;
 
                 LabelResult1Time.Content = CalculationTime.ToString();
-                LabelResult1NeededTerms.Content = ArrayResults.Length.ToString();
-                LabelResult1PossibleTerms.Content = NumberOfPossibleTerms.ToString();
+                LabelResult1NeededTerms.Content = IndexArrayResults.ToString();
+                LabelResult1DeletedTerms.Content = NumberOfDeletedTerms.ToString();
                 LabelResult1nDigits.Content = NeededNumberOfDigits1.ToString();
 
                 if (!CalculateJustA)
@@ -226,7 +233,6 @@ namespace BwInf38Runde2Aufgabe2
                 {
                     ListTerms[nDigit].Add(NewTerm);
                     ArrayResults[IndexArrayResults++] = NewTerm.GetResult();
-
                 }
             }
 
@@ -253,6 +259,7 @@ namespace BwInf38Runde2Aufgabe2
             {
                 if (ArrayResults[i] == TermResult)
                 {
+                    NumberOfDeletedTerms++;
                     return false;
                 }
             }
@@ -269,6 +276,7 @@ namespace BwInf38Runde2Aufgabe2
             //}
             if (TermResult == 0)
             {
+                NumberOfDeletedTerms++;
                 return false;
             }
             else if (TermResult == GoalNumber)
@@ -301,6 +309,40 @@ namespace BwInf38Runde2Aufgabe2
         {
             CalculateJustA = true;
             ButtonCalculateAB_Click(sender, e);
+        }
+
+        private void DigitPlus_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int Digit = int.Parse(TextBoxDigit.Text);
+                if (Digit == 9)
+                {
+                    return;
+                }
+                TextBoxDigit.Text = (++Digit).ToString();
+            }
+            catch
+            {
+                return;
+            }
+        }
+
+        private void DigitMinus_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                int Digit = int.Parse(TextBoxDigit.Text);
+                if (Digit == 1)
+                {
+                    return;
+                }
+                TextBoxDigit.Text = (--Digit).ToString();
+            }
+            catch
+            {
+                return;
+            }
         }
     }
 }
