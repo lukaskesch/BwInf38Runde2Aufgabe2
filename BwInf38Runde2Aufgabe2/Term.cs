@@ -36,26 +36,37 @@ namespace BwInf38Runde2Aufgabe2
     }
     public class FactorialOperator : Term
     {
-        private long Number;
-        public FactorialOperator(long Input) : base()
+        private Term PriorTerm;
+        private static SortedList<long, long> FactorialResults = new SortedList<long, long>();
+        public FactorialOperator(Term _PriorTerm) : base()
         {
-            Number = Input;
+            PriorTerm = _PriorTerm;
         }
 
         public override long GetResult()
         {
-            long result = 1;
-            while (Number != 1)
-            {
-                result *= Number;
-                Number--;
-            }
-            return result;
+            int index = FactorialResults.IndexOfValue(PriorTerm.GetResult());
+            return FactorialResults[index];
         }
 
         public static bool IsCalculatable(Term Term1)
         {
-            return true;
+            try
+            {
+                long result = 1;
+                long Number = Term1.GetResult();
+                while (Number != 1)
+                {
+                    result *= Number;
+                    Number--;
+                }
+                FactorialResults.Add(Number, Term1.GetResult());
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 
@@ -73,11 +84,15 @@ namespace BwInf38Runde2Aufgabe2
 
     public class AddOperator : DoubleInputOperator
     {
-        public AddOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
+        long result;
+        public AddOperator(Term Term1, Term Term2) : base(Term1, Term2)
+        {
+            result = Term1.GetResult() + Term2.GetResult();
+        }
 
         public override long GetResult()
         {
-            return Term1.GetResult() + Term2.GetResult();
+            return result;
         }
         public override string PrintTerm()
         {
@@ -87,11 +102,15 @@ namespace BwInf38Runde2Aufgabe2
 
     public class SubtractOperator : DoubleInputOperator
     {
-        public SubtractOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
+        long result;
+        public SubtractOperator(Term Term1, Term Term2) : base(Term1, Term2)
+        {
+            result = Term1.GetResult() - Term2.GetResult();
+        }
 
         public override long GetResult()
         {
-            return Term1.GetResult() - Term2.GetResult();
+            return result;
         }
         public override string PrintTerm()
         {
@@ -101,11 +120,15 @@ namespace BwInf38Runde2Aufgabe2
 
     public class MultiplyOperator : DoubleInputOperator
     {
-        public MultiplyOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
+        long result;
+        public MultiplyOperator(Term Term1, Term Term2) : base(Term1, Term2)
+        {
+            result = Term1.GetResult() * Term2.GetResult();
+        }
 
         public override long GetResult()
         {
-            return Term1.GetResult() * Term2.GetResult();
+            return result;
         }
         public override string PrintTerm()
         {
@@ -115,11 +138,15 @@ namespace BwInf38Runde2Aufgabe2
 
     public class DivisionOperator : DoubleInputOperator
     {
-        public DivisionOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
+        long result;
+        public DivisionOperator(Term Term1, Term Term2) : base(Term1, Term2)
+        {
+            result = Term1.GetResult() / Term2.GetResult();
+        }
 
         public override long GetResult()
         {
-            return Term1.GetResult() / Term2.GetResult();
+            return result;
         }
         public override string PrintTerm()
         {
@@ -141,6 +168,7 @@ namespace BwInf38Runde2Aufgabe2
 
     public class ModuloOperator : DoubleInputOperator
     {
+        long result;
         public ModuloOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
 
         public override long GetResult()
@@ -166,6 +194,7 @@ namespace BwInf38Runde2Aufgabe2
 
     public class PowerOperator : DoubleInputOperator
     {
+        long result;
         public PowerOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
 
         public override long GetResult()
