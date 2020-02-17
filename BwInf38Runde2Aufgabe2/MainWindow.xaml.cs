@@ -153,6 +153,11 @@ namespace BwInf38Runde2Aufgabe2
                         {
                             OldTerm = ListTerms[DigitLenght][i];
                             NewTerm = new FactorialOperator(OldTerm);
+                            if (CheckTerm(NewTerm, 2))
+                            {
+                                ListTerms[nDigit].Add(NewTerm);
+                                DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                            }
                         }
                     }
 
@@ -260,6 +265,13 @@ namespace BwInf38Runde2Aufgabe2
             if (DictionaryResult.ContainsKey(TermResult))
             {
                 NumberOfDeletedTerms++;
+
+                //Wenn Term aus B weniger Ziffern hat als einer mit dem gleichen Ergebnis aus A
+                if (Task == 2)
+                {
+
+                }
+
                 return false;
             }
             else if (TermResult <= 0)
