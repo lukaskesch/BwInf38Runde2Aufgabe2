@@ -16,6 +16,14 @@ namespace BwInf38Runde2Aufgabe2
         {
             return string.Empty;
         }
+        public static double GetLogLong()
+        {
+            return Math.Log10(long.MaxValue);
+        }
+        public static double GetLogLogLong()
+        {
+            return Math.Log10(Math.Log10(long.MaxValue));
+        }
     }
     public class Literal : Term
     {
@@ -36,36 +44,32 @@ namespace BwInf38Runde2Aufgabe2
     }
     public class FactorialOperator : Term
     {
-        private Term PriorTerm;
-        private static SortedList<long, long> FactorialResults = new SortedList<long, long>();
-        public FactorialOperator(Term _PriorTerm) : base()
+        long result;
+        public FactorialOperator(Term PriorTerm) : base()
         {
-            PriorTerm = _PriorTerm;
+            result = 1;
+            long Number = PriorTerm.GetResult();
+            while (Number != 1)
+            {
+                result *= Number;
+                Number--;
+            }
         }
 
         public override long GetResult()
         {
-            int index = FactorialResults.IndexOfValue(PriorTerm.GetResult());
-            return FactorialResults[index];
+            return result;
         }
 
         public static bool IsCalculatable(Term Term1)
         {
-            try
-            {
-                long result = 1;
-                long Number = Term1.GetResult();
-                while (Number != 1)
-                {
-                    result *= Number;
-                    Number--;
-                }
-                FactorialResults.Add(Number, Term1.GetResult());
-                return true;
-            }
-            catch
+            if (Term1.GetResult() > 20)
             {
                 return false;
+            }
+            else
+            {
+                return true;
             }
         }
     }
@@ -97,6 +101,19 @@ namespace BwInf38Runde2Aufgabe2
         public override string PrintTerm()
         {
             return "(" + Term1.PrintTerm() + "+" + Term2.PrintTerm() + ")";
+        }
+        public static bool IsCalculatable(Term Term1, Term Term2)
+        {
+            long Check = long.MaxValue;
+            Check -= Term1.GetResult() + Term2.GetResult();
+            if (Check > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
@@ -134,6 +151,17 @@ namespace BwInf38Runde2Aufgabe2
         {
             return "(" + Term1.PrintTerm() + "*" + Term2.PrintTerm() + ")";
         }
+        public static bool IsCalculatable(Term Term1, Term Term2)
+        {
+            if (Term.GetLogLong() + 0.00000001 < Math.Log10(Term1.GetResult()) + Math.Log10(Term2.GetResult()))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 
     public class DivisionOperator : DoubleInputOperator
@@ -169,37 +197,33 @@ namespace BwInf38Runde2Aufgabe2
     public class ModuloOperator : DoubleInputOperator
     {
         long result;
-        public ModuloOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
+        public ModuloOperator(Term Term1, Term Term2) : base(Term1, Term2)
+        {
+            result = Term1.GetResult() % Term2.GetResult();
+        }
 
         public override long GetResult()
         {
-            return Term1.GetResult() % Term2.GetResult();
+            return result;
         }
         public override string PrintTerm()
         {
             return "(" + Term1.PrintTerm() + "%" + Term2.PrintTerm() + ")";
         }
-        public static bool IsCalculatable(Term Term2)
-        {
-            if (Term2.GetResult() == 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
+
     }
 
     public class PowerOperator : DoubleInputOperator
     {
         long result;
-        public PowerOperator(Term Term1, Term Term2) : base(Term1, Term2) { }
+        public PowerOperator(Term Term1, Term Term2) : base(Term1, Term2)
+        {
+            result = (long)Math.Pow(Term1.GetResult(), Term2.GetResult());
+        }
 
         public override long GetResult()
         {
-            return (int)Math.Pow(Term1.GetResult(), Term2.GetResult());
+            return result;
         }
         public override string PrintTerm()
         {
@@ -208,8 +232,14 @@ namespace BwInf38Runde2Aufgabe2
 
         public static bool IsCalculatable(Term Term1, Term Term2)
         {
-            long Dummy;
-            return long.TryParse(Math.Pow(Term1.GetResult(), Term2.GetResult()).ToString(), out Dummy);
+            if (Term.GetLogLogLong() + 0.000001 < Math.Log10(Term2.GetResult()) + Math.Log10(Math.Log10(Term1.GetResult())))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

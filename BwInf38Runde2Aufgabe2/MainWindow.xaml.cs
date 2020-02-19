@@ -42,6 +42,7 @@ namespace BwInf38Runde2Aufgabe2
         {
             InitializeComponent();
             TextBoxDigit.Text = 1.ToString();
+            MessageBox.Show(long.MaxValue.ToString());
         }
 
 
@@ -198,11 +199,14 @@ namespace BwInf38Runde2Aufgabe2
 
 
             //Addition
-            NewTerm = new AddOperator(Term1, Term2);
-            if (CheckTerm(NewTerm, Task))
+            if (Task == 1 || MultiplyOperator.IsCalculatable(Term1, Term2))
             {
-                ListTerms[nDigit].Add(NewTerm);
-                DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                NewTerm = new AddOperator(Term1, Term2);
+                if (CheckTerm(NewTerm, Task))
+                {
+                    ListTerms[nDigit].Add(NewTerm);
+                    DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                }
             }
 
             //Subtraction
@@ -214,12 +218,16 @@ namespace BwInf38Runde2Aufgabe2
             }
 
             //Multiplication
-            NewTerm = new MultiplyOperator(Term1, Term2);
-            if (CheckTerm(NewTerm, Task))
+            if (Task == 1 || MultiplyOperator.IsCalculatable(Term1, Term2))
             {
-                ListTerms[nDigit].Add(NewTerm);
-                DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                NewTerm = new MultiplyOperator(Term1, Term2);
+                if (CheckTerm(NewTerm, Task))
+                {
+                    ListTerms[nDigit].Add(NewTerm);
+                    DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                }
             }
+
 
             //Division
             if (DivisionOperator.IsCalculatable(Term1, Term2))
@@ -236,28 +244,24 @@ namespace BwInf38Runde2Aufgabe2
             if (BoolModulo)
             {
                 NewTerm = new ModuloOperator(Term1, Term2);
-                if (CheckTerm(NewTerm, Task) && ModuloOperator.IsCalculatable(Term2))
+                if (CheckTerm(NewTerm, Task))
                 {
                     ListTerms[nDigit].Add(NewTerm);
                     DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
                 }
             }
 
-            //Wird nur ausgeführt, wenn GoalNumber1 schon erreicht wurde
-            if (Task == 2)
+            //Power - Wird nur ausgeführt, wenn GoalNumber1 schon erreicht wurde
+            if (Task == 2 && PowerOperator.IsCalculatable(Term1, Term2))
             {
-                //Power
-                if (PowerOperator.IsCalculatable(Term1, Term2))
+                NewTerm = new PowerOperator(Term1, Term2);
+                if (CheckTerm(NewTerm, Task))
                 {
-                    NewTerm = new PowerOperator(Term1, Term2);
-                    if (CheckTerm(NewTerm, Task))
-                    {
-                        ListTerms[nDigit].Add(NewTerm);
-                        DictionaryResult.Add(NewTerm.GetResult(), 0);
-
-                    }
+                    ListTerms[nDigit].Add(NewTerm);
+                    DictionaryResult.Add(NewTerm.GetResult(), 0);
                 }
             }
+
         }
         private bool CheckTerm(Term NewTerm, int Task)
         {
