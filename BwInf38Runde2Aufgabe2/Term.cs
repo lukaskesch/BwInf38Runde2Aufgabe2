@@ -8,6 +8,9 @@ namespace BwInf38Runde2Aufgabe2
 {
     public abstract class Term
     {
+        private static double LogLong = Math.Log10(long.MaxValue);
+        private static double LogLogLong = Math.Log10(Math.Log10(long.MaxValue));
+
         public virtual long GetResult()
         {
             return 0;
@@ -18,11 +21,11 @@ namespace BwInf38Runde2Aufgabe2
         }
         public static double GetLogLong()
         {
-            return Math.Log10(long.MaxValue);
+            return LogLong;
         }
         public static double GetLogLogLong()
         {
-            return Math.Log10(Math.Log10(long.MaxValue));
+            return LogLogLong;
         }
     }
     public class Literal : Term
@@ -44,9 +47,11 @@ namespace BwInf38Runde2Aufgabe2
     }
     public class FactorialOperator : Term
     {
-        long result;
+        protected long result;
+        protected Term Term1;
         public FactorialOperator(Term PriorTerm) : base()
         {
+            Term1 = PriorTerm;
             result = 1;
             long Number = PriorTerm.GetResult();
             while (Number != 1)
@@ -60,7 +65,10 @@ namespace BwInf38Runde2Aufgabe2
         {
             return result;
         }
-
+        public override string PrintTerm()
+        {
+            return "(" + Term1.PrintTerm() + ")!";
+        }
         public static bool IsCalculatable(Term Term1)
         {
             if (Term1.GetResult() <= 20)

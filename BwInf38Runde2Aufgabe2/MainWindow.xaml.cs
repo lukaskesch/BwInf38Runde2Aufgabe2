@@ -88,6 +88,8 @@ namespace BwInf38Runde2Aufgabe2
                     LabelResult2DeletedTerms.Content = NumberOfDeletedTerms.ToString();
                     LabelResult2nDigits.Content = NeededNumberOfDigits2.ToString();
 
+                    DictionaryResult = null;
+                    ListTerms = null;
                 }
 
 
@@ -120,18 +122,6 @@ namespace BwInf38Runde2Aufgabe2
                     return;
                 }
             }
-            else if (Task == 2)
-            {
-                //Erstelle Fakultät für FirstLiteral
-                Term NewTerm = new FactorialOperator(ListTerms[0][0]);
-                if (CheckTerm(NewTerm))
-                {
-                    ListTerms[0].Add(NewTerm);
-                    DictionaryResult.Add(NewTerm.GetResult(), 0);
-                }
-            }
-
-
 
             //Erstelle für jede Ziffernlänge (alle) Terme
             for (nDigit = 1; true; nDigit++)
@@ -163,27 +153,33 @@ namespace BwInf38Runde2Aufgabe2
                 else if (Task == 2)
                 {
                     //Wende Fakultät für nDigit-1 an
-                    Term NewTerm;
+                    Term OldTerm;
                     int Lenght = ListTerms[nDigit - 1].Count;
 
                     for (int i = 0; i < Lenght; i++)
                     {
-                        if (FactorialOperator.IsCalculatable(ListTerms[nDigit - 1][i]))
+                        OldTerm = ListTerms[nDigit - 1][i];
+                        while (FactorialOperator.IsCalculatable(OldTerm))
                         {
-                            NewTerm = new FactorialOperator(ListTerms[nDigit - 1][i]);
+                            Term NewTerm = new FactorialOperator(OldTerm);
+
                             if (CheckTerm(NewTerm))
                             {
                                 ListTerms[nDigit - 1].Add(NewTerm);
                                 DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
                             }
+                            else if (NewTerm.GetResult() == OldTerm.GetResult())
+                            {
+                                break;
+                            }
+                            OldTerm = NewTerm;
                         }
-
                     }
-
                 }
-                if (Task == 2 && NeededNumberOfDigits1 <= nDigit)
+                if (Task == 2 && NeededNumberOfDigits1 - 1 <= nDigit)
                 {
-                    LabelResult2Term.Content = "Keine bessere Lösung gefunden";
+                    NeededNumberOfDigits2 = nDigit;
+                    LabelResult2Term.Content = "Keine kürzere Lösung gefunden";
                     return;
                 }
 
@@ -282,15 +278,29 @@ namespace BwInf38Runde2Aufgabe2
             }
 
             //Power - Wird nur ausgeführt, wenn GoalNumber1 schon erreicht wurde
-            if (Task == 2 && PowerOperator.IsCalculatable(Term1, Term2))
+            if (Task == 2)
             {
-                NewTerm = new PowerOperator(Term1, Term2);
-                if (CheckTerm(NewTerm))
+                if (PowerOperator.IsCalculatable(Term1, Term2))
                 {
-                    ListTerms[nDigit].Add(NewTerm);
-                    DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                    NewTerm = new PowerOperator(Term1, Term2);
+                    if (CheckTerm(NewTerm))
+                    {
+                        ListTerms[nDigit].Add(NewTerm);
+                        DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                    }
+                }
+                if (PowerOperator.IsCalculatable(Term2, Term1))
+                {
+                    NewTerm = new PowerOperator(Term2, Term1);
+                    if (CheckTerm(NewTerm))
+                    {
+                        ListTerms[nDigit].Add(NewTerm);
+                        DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                    }
                 }
             }
+
+
 
         }
         private bool CheckTerm(Term NewTerm)
@@ -298,8 +308,18 @@ namespace BwInf38Runde2Aufgabe2
             byte nDigitResult;
             long TermResult = NewTerm.GetResult();
 
+            if (Task == 2 && TermResult == GoalNumber)
+            {
+
+
+                //GoalNumber2 wurde getroffen
+                GoalNumber2Reached = true;
+                LabelResult2Term.Content = NewTerm.PrintTerm();
+                return false;
+
+            }
             //Überprüfe, ob Ergebnis schon existiert (Task 1)
-            if (Task == 1 && DictionaryResult.ContainsKey(TermResult))
+            else if (Task == 1 && DictionaryResult.ContainsKey(TermResult))
             {
                 NumberOfDeletedTerms++;
                 return false;
@@ -307,6 +327,7 @@ namespace BwInf38Runde2Aufgabe2
             //Überprüfe, ob Ergebnis schon existiert und überprüft, ob neuer Term kürzer ist (Task 2)
             else if (Task == 2 && DictionaryResult.TryGetValue(TermResult, out nDigitResult))
             {
+                NumberOfDeletedTerms++;
                 if (nDigit < nDigitResult)
                 {
                     DictionaryResult.Remove(TermResult);
@@ -322,23 +343,13 @@ namespace BwInf38Runde2Aufgabe2
                 NumberOfDeletedTerms++;
                 return false;
             }
-            else if (TermResult == GoalNumber)
+            else if (Task == 1 && TermResult == GoalNumber && !GoalNumber1Reached)
             {
-                if (Task == 1 && !GoalNumber1Reached)
-                {
-                    //GoalNumber1 wurde getroffen
-                    GoalNumber1Reached = true;
-                    LabelResult1Term.Content = NewTerm.PrintTerm();
-
-                }
-                else if (Task == 2)
-                {
-                    //GoalNumber2 wurde getroffen
-                    GoalNumber2Reached = true;
-                    LabelResult2Term.Content = NewTerm.PrintTerm();
-
-                }
+                //GoalNumber1 wurde getroffen
+                GoalNumber1Reached = true;
+                LabelResult1Term.Content = NewTerm.PrintTerm();
             }
+
             return true;
         }
 
