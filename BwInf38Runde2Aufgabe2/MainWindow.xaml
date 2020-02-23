@@ -74,10 +74,10 @@
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0"  Content="Rechenzeit in Sek: " HorizontalAlignment="Left"/>
                     <Label Grid.Row="0" Name="LabelResult2Time" HorizontalAlignment="Right"/>
-                    <Label Grid.Row="1" Content="Anzahl an erstellten Termen: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="1" Content="Anzahl an gespeicherten Termen: " HorizontalContentAlignment="Left"/>
                     <Label Grid.Row="1" Name="LabelResult2NeededTerms" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="2" Content="Anzahl an möglichen Termen: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="2" Name="LabelResult2PossibleTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="2" Content="Anzahl an verworfenen Termen: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="2" Name="LabelResult2DeletedTerms" HorizontalContentAlignment="Right"/>
                     <Label Grid.Row="3" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
                     <Label Grid.Row="3" Name="LabelResult2nDigits" HorizontalContentAlignment="Right"/>
                     <Label Grid.Row="4" Content="Ausgabe: " HorizontalContentAlignment="Left"/>

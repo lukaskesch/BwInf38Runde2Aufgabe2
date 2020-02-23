@@ -63,13 +63,13 @@ namespace BwInf38Runde2Aufgabe2
 
         public static bool IsCalculatable(Term Term1)
         {
-            if (Term1.GetResult() > 20)
+            if (Term1.GetResult() <= 20)
             {
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
     }
@@ -153,13 +153,13 @@ namespace BwInf38Runde2Aufgabe2
         }
         public static bool IsCalculatable(Term Term1, Term Term2)
         {
-            if (Term.GetLogLong() + 0.00000001 < Math.Log10(Term1.GetResult()) + Math.Log10(Term2.GetResult()))
+            if (GetLogLong() - 0.00000001 > Math.Log10(Term1.GetResult()) + Math.Log10(Term2.GetResult()))
             {
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
     }
@@ -232,13 +232,13 @@ namespace BwInf38Runde2Aufgabe2
 
         public static bool IsCalculatable(Term Term1, Term Term2)
         {
-            if (Term.GetLogLogLong() + 0.000001 < Math.Log10(Term2.GetResult()) + Math.Log10(Math.Log10(Term1.GetResult())))
+            if (GetLogLogLong() - 0.000001 > Math.Log10(Term2.GetResult()) + Math.Log10(Math.Log10(Term1.GetResult())))
             {
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
     }
