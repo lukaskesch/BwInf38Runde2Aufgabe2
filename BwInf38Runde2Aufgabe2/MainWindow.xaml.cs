@@ -27,7 +27,7 @@ namespace BwInf38Runde2Aufgabe2
         byte Task;
         long NumberOfDeletedTerms;
         bool BoolModulo = false;
-        bool GoalNumber1Reached, GoalNumber2Reached;
+        bool GoalNumber1Reached, GoalNumber2Reached, GoalNumberIsNegativ;
 
         List<List<Term>> ListTerms = new List<List<Term>>();
         SortedDictionary<long, byte> DictionaryResult = new SortedDictionary<long, byte>();
@@ -48,6 +48,7 @@ namespace BwInf38Runde2Aufgabe2
                 NumberOfDeletedTerms = 0;
                 GoalNumber1Reached = false;
                 GoalNumber2Reached = false;
+                GoalNumberIsNegativ = false;
                 ListTerms = new List<List<Term>>();
                 DictionaryResult = new SortedDictionary<long, byte>();
 
@@ -55,10 +56,16 @@ namespace BwInf38Runde2Aufgabe2
                 GoalNumber = int.Parse(TextBoxNumberToCalculate.Text);
                 Digit = int.Parse(TextBoxDigit.Text);
 
-                if (Digit < 1 || Digit > 9)
+                if (Digit < -9 || Digit > 9 || Digit == 0)
                 {
                     MessageBox.Show("Die eingegebenen Parameter konnten nicht entgegen genommen werden");
                     return;
+                }
+
+                if (GoalNumber < 0)
+                {
+                    GoalNumberIsNegativ = true;
+                    GoalNumber *= -1;
                 }
 
                 stopwatch.Restart();
@@ -77,7 +84,10 @@ namespace BwInf38Runde2Aufgabe2
                 if (sender != null)
                 {
                     stopwatch.Restart();
+                    ListTerms = new List<List<Term>>();
+                    DictionaryResult = new SortedDictionary<long, byte>();
                     Task = 2;
+                    NumberOfDeletedTerms = 0;
                     CalculateTerm();
                     CalculationTime = stopwatch.ElapsedMilliseconds;
                     CalculationTime /= 1000;
@@ -92,8 +102,6 @@ namespace BwInf38Runde2Aufgabe2
                     ListTerms = null;
                 }
 
-
-
             }
             //catch (Exception)
             {
@@ -104,53 +112,44 @@ namespace BwInf38Runde2Aufgabe2
 
         private void CalculateTerm()
         {
-            if (Task == 1)
+
+            //Erstelle den ersten Digit
+            Literal FirstLiteral = new Literal(Digit);
+
+            //Lege eine Liste an Index 0 an und speicher in ihr First Literal
+            ListTerms.Add(new List<Term>());
+            ListTerms[0].Add(FirstLiteral);
+            DictionaryResult.Add(FirstLiteral.GetResult(), 0);
+
+            //Schaue, ob Literal GoalNumber ist
+            if (FirstLiteral.GetResult() == GoalNumber)
             {
-                //Erstelle den ersten Digit
-                Literal FirstLiteral = new Literal(Digit);
-
-                //Lege eine Liste an Index 0 an und speicher in ihr First Literal
-                ListTerms.Add(new List<Term>());
-                ListTerms[0].Add(FirstLiteral);
-                DictionaryResult.Add(FirstLiteral.GetResult(), 0);
-
-                //Schaue, ob Literal GoalNumber ist
-                if (FirstLiteral.GetResult() == GoalNumber)
-                {
-                    LabelResult1Term.Content = FirstLiteral.GetResult().ToString();
-                    NeededNumberOfDigits1 = 1;
-                    return;
-                }
+                LabelResult1Term.Content = FirstLiteral.GetResult().ToString();
+                NeededNumberOfDigits1 = 1;
+                return;
             }
+
 
             //Erstelle für jede Ziffernlänge (alle) Terme
             for (nDigit = 1; true; nDigit++)
             {
-                //Schaue ob GoalNumber1 schon erstellt wurde in Teil 1
-                if (Task == 1 && GoalNumber1Reached)
-                {
-                    NeededNumberOfDigits1 = nDigit;
-                    return;
-                }
-                else if (Task == 1)
-                {
-                    //Lege Liste für nDigit an
-                    ListTerms.Add(new List<Term>());
+                //Lege Liste für nDigit an
+                ListTerms.Add(new List<Term>());
 
-                    //Erstelle Literal für nDigit
-                    long LiteralValue = ListTerms[nDigit - 1][0].GetResult();
-                    LiteralValue = LiteralValue * 10 + Digit;
-                    Literal NewLiteral = new Literal(LiteralValue);
-                    ListTerms[nDigit].Add(NewLiteral);
+                //Erstelle Literal für nDigit
+                long LiteralValue = ListTerms[nDigit - 1][0].GetResult();
+                LiteralValue = LiteralValue * 10 + Digit;
+                Literal NewLiteral = new Literal(LiteralValue);
+                ListTerms[nDigit].Add(NewLiteral);
 
-                    //Muss theoretisch noch überprüft werden, ob wert nicht schon erreicht
-                    if (LiteralValue == GoalNumber)
-                    {
-                        GoalNumber1Reached = true;
-                        LabelResult1Term.Content = LiteralValue.ToString();
-                    }
+                //Muss theoretisch noch überprüft werden, ob wert nicht schon erreicht
+                if (LiteralValue == GoalNumber)
+                {
+                    GoalNumber1Reached = true;
+                    LabelResult1Term.Content = LiteralValue.ToString();
                 }
-                else if (Task == 2)
+
+                if (Task == 2)
                 {
                     //Wende Fakultät für nDigit-1 an
                     Term OldTerm;
@@ -200,9 +199,15 @@ namespace BwInf38Runde2Aufgabe2
                             CreateTerms(DigitLenght, ElementsOfDigitLength, RemainingDigitDifference, ElementsOfRemainingDigitDifference);
 
                             //Breche ab, wenn GoalNum2 erreicht
-                            if (GoalNumber2Reached)
+
+                            if (Task == 2 && GoalNumber2Reached)
                             {
                                 NeededNumberOfDigits2 = nDigit + 1;
+                                return;
+                            }
+                            else if (Task == 1 && GoalNumber1Reached)
+                            {
+                                NeededNumberOfDigits1 = nDigit + 1;
                                 return;
                             }
                         }
@@ -305,49 +310,46 @@ namespace BwInf38Runde2Aufgabe2
         }
         private bool CheckTerm(Term NewTerm)
         {
-            byte nDigitResult;
             long TermResult = NewTerm.GetResult();
 
-            if (Task == 2 && TermResult == GoalNumber)
-            {
-
-
-                //GoalNumber2 wurde getroffen
-                GoalNumber2Reached = true;
-                LabelResult2Term.Content = NewTerm.PrintTerm();
-                return false;
-
-            }
-            //Überprüfe, ob Ergebnis schon existiert (Task 1)
-            else if (Task == 1 && DictionaryResult.ContainsKey(TermResult))
+            //Überprüfe, ob Ergebnis schon existiert
+            if (DictionaryResult.ContainsKey(TermResult))
             {
                 NumberOfDeletedTerms++;
                 return false;
-            }
-            //Überprüfe, ob Ergebnis schon existiert und überprüft, ob neuer Term kürzer ist (Task 2)
-            else if (Task == 2 && DictionaryResult.TryGetValue(TermResult, out nDigitResult))
-            {
-                NumberOfDeletedTerms++;
-                if (nDigit < nDigitResult)
-                {
-                    DictionaryResult.Remove(TermResult);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
             }
             else if (TermResult <= 0)
             {
                 NumberOfDeletedTerms++;
                 return false;
             }
-            else if (Task == 1 && TermResult == GoalNumber && !GoalNumber1Reached)
+            else if (Task == 2 && TermResult == GoalNumber)
+            {
+                //GoalNumber2 wurde getroffen
+                GoalNumber2Reached = true;
+                if (GoalNumberIsNegativ)
+                {
+                    LabelResult2Term.Content = "-(" + NewTerm.PrintTerm() + ")";
+                }
+                else
+                {
+                    LabelResult2Term.Content = NewTerm.PrintTerm();
+                }
+                return false;
+            }
+            else if (Task == 1 && TermResult == GoalNumber)
             {
                 //GoalNumber1 wurde getroffen
                 GoalNumber1Reached = true;
-                LabelResult1Term.Content = NewTerm.PrintTerm();
+                if (GoalNumberIsNegativ)
+                {
+                    LabelResult1Term.Content = "-(" + NewTerm.PrintTerm() + ")";
+                }
+                else
+                {
+                    LabelResult1Term.Content = NewTerm.PrintTerm();
+                }
+                return false;
             }
 
             return true;
@@ -373,9 +375,14 @@ namespace BwInf38Runde2Aufgabe2
                     return;
                 }
                 TextBoxDigit.Text = (++Digit).ToString();
+                if (Digit == 0)
+                {
+                    TextBoxDigit.Text = (++Digit).ToString();
+                }
             }
             catch
             {
+                TextBoxDigit.Text = 1.ToString();
                 return;
             }
         }
@@ -384,14 +391,19 @@ namespace BwInf38Runde2Aufgabe2
             try
             {
                 int Digit = int.Parse(TextBoxDigit.Text);
-                if (Digit == 1)
+                if (Digit == -9)
                 {
                     return;
                 }
                 TextBoxDigit.Text = (--Digit).ToString();
+                if (Digit == 0)
+                {
+                    TextBoxDigit.Text = (--Digit).ToString();
+                }
             }
             catch
             {
+                TextBoxDigit.Text = 1.ToString();
                 return;
             }
         }
