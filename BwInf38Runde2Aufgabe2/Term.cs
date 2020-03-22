@@ -240,7 +240,7 @@ namespace BwInf38Runde2Aufgabe2
 
         public static bool IsCalculatable(Term Term1, Term Term2)
         {
-            if (GetLogLogLong() - 0.000001 > Math.Log10(Term2.GetResult()) + Math.Log10(Math.Log10(Term1.GetResult())))
+            if (GetLogLogLong() - 0.0000001 > Math.Log10(Term2.GetResult()) + Math.Log10(Math.Log10(Term1.GetResult())))
             {
                 return true;
             }

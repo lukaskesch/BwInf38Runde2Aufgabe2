@@ -22,12 +22,13 @@ namespace BwInf38Runde2Aufgabe2
     public partial class MainWindow : Window
     {
         double CalculationTime;
-        int GoalNumber, Digit, nDigit;
+        int Digit, nDigit;
+        long GoalNumber;
         int NeededNumberOfDigits1, NeededNumberOfDigits2;
         byte Task;
         long NumberOfDeletedTerms;
         bool BoolModulo = false;
-        bool GoalNumber1Reached, GoalNumber2Reached, GoalNumberIsNegativ;
+        bool GoalNumber1Reached, GoalNumber2Reached;
 
         List<List<Term>> ListTerms = new List<List<Term>>();
         SortedDictionary<long, byte> DictionaryResult = new SortedDictionary<long, byte>();
@@ -48,24 +49,17 @@ namespace BwInf38Runde2Aufgabe2
                 NumberOfDeletedTerms = 0;
                 GoalNumber1Reached = false;
                 GoalNumber2Reached = false;
-                GoalNumberIsNegativ = false;
                 ListTerms = new List<List<Term>>();
                 DictionaryResult = new SortedDictionary<long, byte>();
 
                 BoolModulo = (bool)CheckBoxModulo.IsChecked;
-                GoalNumber = int.Parse(TextBoxNumberToCalculate.Text);
+                GoalNumber = long.Parse(TextBoxNumberToCalculate.Text);
                 Digit = int.Parse(TextBoxDigit.Text);
 
-                if (Digit < -9 || Digit > 9 || Digit == 0)
+                if (Digit < 1 || Digit > 9)
                 {
                     MessageBox.Show("Die eingegebenen Parameter konnten nicht entgegen genommen werden");
                     return;
-                }
-
-                if (GoalNumber < 0)
-                {
-                    GoalNumberIsNegativ = true;
-                    GoalNumber *= -1;
                 }
 
                 stopwatch.Restart();
@@ -327,28 +321,18 @@ namespace BwInf38Runde2Aufgabe2
             {
                 //GoalNumber2 wurde getroffen
                 GoalNumber2Reached = true;
-                if (GoalNumberIsNegativ)
-                {
-                    LabelResult2Term.Content = "-(" + NewTerm.PrintTerm() + ")";
-                }
-                else
-                {
-                    LabelResult2Term.Content = NewTerm.PrintTerm();
-                }
+                LabelResult2Term.Content = NewTerm.PrintTerm();
+                //TB2.Text = NewTerm.PrintTerm();
+
                 return false;
             }
             else if (Task == 1 && TermResult == GoalNumber)
             {
                 //GoalNumber1 wurde getroffen
                 GoalNumber1Reached = true;
-                if (GoalNumberIsNegativ)
-                {
-                    LabelResult1Term.Content = "-(" + NewTerm.PrintTerm() + ")";
-                }
-                else
-                {
-                    LabelResult1Term.Content = NewTerm.PrintTerm();
-                }
+                LabelResult1Term.Content = NewTerm.PrintTerm();
+                //TB1.Text = NewTerm.PrintTerm();
+
                 return false;
             }
 
@@ -375,10 +359,7 @@ namespace BwInf38Runde2Aufgabe2
                     return;
                 }
                 TextBoxDigit.Text = (++Digit).ToString();
-                if (Digit == 0)
-                {
-                    TextBoxDigit.Text = (++Digit).ToString();
-                }
+
             }
             catch
             {
@@ -391,15 +372,12 @@ namespace BwInf38Runde2Aufgabe2
             try
             {
                 int Digit = int.Parse(TextBoxDigit.Text);
-                if (Digit == -9)
+                if (Digit == 1)
                 {
                     return;
                 }
                 TextBoxDigit.Text = (--Digit).ToString();
-                if (Digit == 0)
-                {
-                    TextBoxDigit.Text = (--Digit).ToString();
-                }
+
             }
             catch
             {

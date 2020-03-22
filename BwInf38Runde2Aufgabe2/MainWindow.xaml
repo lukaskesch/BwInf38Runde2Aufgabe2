@@ -42,7 +42,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <GroupBox Header="Lösung A" Grid.Row="0" Margin="0 5 5 5">
+            <GroupBox Header="Teil A" Grid.Row="0" Margin="0 5 5 5">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -59,11 +59,12 @@
                     <Label Grid.Row="2" Name="LabelResult1DeletedTerms" HorizontalContentAlignment="Right"/>
                     <Label Grid.Row="3" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
                     <Label Grid.Row="3" Name="LabelResult1nDigits" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="4" Content="Ausgabe: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="4" Content="Lösung: " HorizontalContentAlignment="Left"/>
                     <Label Grid.Row="4" Name="LabelResult1Term" HorizontalContentAlignment="Right"/>
+                    <!--<TextBox Grid.Row="4" Name="TB1"></TextBox>-->
                 </Grid>
             </GroupBox>
-            <GroupBox Header="Lösung B" Grid.Row="1" Margin="0 0 5 5">
+            <GroupBox Header="Teil B" Grid.Row="1" Margin="0 0 5 5">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -80,8 +81,9 @@
                     <Label Grid.Row="2" Name="LabelResult2DeletedTerms" HorizontalContentAlignment="Right"/>
                     <Label Grid.Row="3" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
                     <Label Grid.Row="3" Name="LabelResult2nDigits" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="4" Content="Ausgabe: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="4" Content="Lösung: " HorizontalContentAlignment="Left"/>
                     <Label Grid.Row="4" Name="LabelResult2Term" HorizontalContentAlignment="Right"/>
+                    <!--<TextBox Grid.Row="4" Name="TB2"></TextBox>-->
                 </Grid>
             </GroupBox>
         </Grid>
