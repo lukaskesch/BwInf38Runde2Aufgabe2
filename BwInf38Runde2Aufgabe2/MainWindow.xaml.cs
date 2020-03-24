@@ -43,7 +43,7 @@ namespace BwInf38Runde2Aufgabe2
 
         private void ButtonCalculateAB_Click(object sender, RoutedEventArgs e)
         {
-            //try
+            try
             {
                 BoolModulo = false;
                 NumberOfDeletedTerms = 0;
@@ -56,7 +56,7 @@ namespace BwInf38Runde2Aufgabe2
                 GoalNumber = long.Parse(TextBoxNumberToCalculate.Text);
                 Digit = int.Parse(TextBoxDigit.Text);
 
-                if (Digit < 1 || Digit > 9)
+                if (Digit < 1 || Digit > 9 || GoalNumber < 1)
                 {
                     MessageBox.Show("Die eingegebenen Parameter konnten nicht entgegen genommen werden");
                     return;
@@ -97,10 +97,9 @@ namespace BwInf38Runde2Aufgabe2
                 }
 
             }
-            //catch (Exception)
+            catch
             {
-                //MessageBox.Show("Die eingegebenen Parameter konnten nicht entgegen genommen werden");
-
+                MessageBox.Show("Die eingegebenen Parameter konnten nicht entgegen genommen werden");
             }
         }
 

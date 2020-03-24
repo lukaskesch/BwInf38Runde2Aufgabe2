@@ -82,23 +82,15 @@ namespace BwInf38Runde2Aufgabe2
         }
     }
 
-    public abstract class DoubleInputOperator : Term
+    public class AddOperator : Term
     {
+        long result;
         protected Term Term1;
         protected Term Term2;
-        //Konstruktor
-        public DoubleInputOperator(Term _Term1, Term _Term2)
+        public AddOperator(Term _Term1, Term _Term2)
         {
             Term1 = _Term1;
             Term2 = _Term2;
-        }
-    }
-
-    public class AddOperator : DoubleInputOperator
-    {
-        long result;
-        public AddOperator(Term Term1, Term Term2) : base(Term1, Term2)
-        {
             result = Term1.GetResult() + Term2.GetResult();
         }
 
@@ -125,11 +117,15 @@ namespace BwInf38Runde2Aufgabe2
         }
     }
 
-    public class SubtractOperator : DoubleInputOperator
+    public class SubtractOperator : Term
     {
         long result;
-        public SubtractOperator(Term Term1, Term Term2) : base(Term1, Term2)
+        protected Term Term1;
+        protected Term Term2;
+        public SubtractOperator(Term _Term1, Term _Term2)
         {
+            Term1 = _Term1;
+            Term2 = _Term2;
             result = Term1.GetResult() - Term2.GetResult();
         }
 
@@ -143,11 +139,15 @@ namespace BwInf38Runde2Aufgabe2
         }
     }
 
-    public class MultiplyOperator : DoubleInputOperator
+    public class MultiplyOperator : Term
     {
         long result;
-        public MultiplyOperator(Term Term1, Term Term2) : base(Term1, Term2)
+        protected Term Term1;
+        protected Term Term2;
+        public MultiplyOperator(Term _Term1, Term _Term2)
         {
+            Term1 = _Term1;
+            Term2 = _Term2;
             result = Term1.GetResult() * Term2.GetResult();
         }
 
@@ -172,11 +172,15 @@ namespace BwInf38Runde2Aufgabe2
         }
     }
 
-    public class DivisionOperator : DoubleInputOperator
+    public class DivisionOperator : Term
     {
         long result;
-        public DivisionOperator(Term Term1, Term Term2) : base(Term1, Term2)
+        protected Term Term1;
+        protected Term Term2;
+        public DivisionOperator(Term _Term1, Term _Term2)
         {
+            Term1 = _Term1;
+            Term2 = _Term2;
             result = Term1.GetResult() / Term2.GetResult();
         }
 
@@ -202,11 +206,15 @@ namespace BwInf38Runde2Aufgabe2
         }
     }
 
-    public class ModuloOperator : DoubleInputOperator
+    public class ModuloOperator : Term
     {
         long result;
-        public ModuloOperator(Term Term1, Term Term2) : base(Term1, Term2)
+        protected Term Term1;
+        protected Term Term2;
+        public ModuloOperator(Term _Term1, Term _Term2)
         {
+            Term1 = _Term1;
+            Term2 = _Term2;
             result = Term1.GetResult() % Term2.GetResult();
         }
 
@@ -221,11 +229,15 @@ namespace BwInf38Runde2Aufgabe2
 
     }
 
-    public class PowerOperator : DoubleInputOperator
+    public class PowerOperator : Term
     {
         long result;
-        public PowerOperator(Term Term1, Term Term2) : base(Term1, Term2)
+        protected Term Term1;
+        protected Term Term2;
+        public PowerOperator(Term _Term1, Term _Term2)
         {
+            Term1 = _Term1;
+            Term2 = _Term2;
             result = (long)Math.Pow(Term1.GetResult(), Term2.GetResult());
         }
 
