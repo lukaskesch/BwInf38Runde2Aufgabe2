@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BwInf38Runde2Aufgabe2"
         mc:Ignorable="d"
-        Title="BwInf 38 Runde 2 Aufgabe 2" Height="360" Width="500"  WindowStartupLocation="CenterScreen">
+        Title="BwInf 38 Runde 2 Aufgabe 2" Height="390" Width="500"  WindowStartupLocation="CenterScreen">
     <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="170"/>
             <ColumnDefinition Width="1.4*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical">
@@ -29,22 +29,29 @@
                         <Label Content="Verwende Modulo:" />
                         <CheckBox Name="CheckBoxModulo" VerticalAlignment="Center"/>
                     </StackPanel>
+                    <Separator/>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Speichere Statistiken:" />
+                        <CheckBox Name="CheckLogFile" VerticalAlignment="Center"/>
+                    </StackPanel>
                 </StackPanel>
             </GroupBox>
         </StackPanel>
         <StackPanel Orientation="Vertical" VerticalAlignment="Bottom">
             <Button Name="ButtonCalculateA" Content="Berechne A" Margin="5" VerticalAlignment="Bottom" Click="ButtonCalculateA_Click"/>
+            <Button Name="ButtonCalculateB" Content="Berechne B" Margin="5" VerticalAlignment="Bottom" Click="ButtonCalculateB_Click"/>
             <Button Name="ButtonCalculateAB" Content="Berechne A und B" Margin="5" VerticalAlignment="Bottom" Click="ButtonCalculateAB_Click"/>
         </StackPanel>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="1.2*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <GroupBox Header="Teil A" Grid.Row="0" Margin="0 5 5 5">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
@@ -57,10 +64,12 @@
                     <Label Grid.Row="1" Name="LabelResult1NeededTerms" HorizontalContentAlignment="Right"/>
                     <Label Grid.Row="2" Content="Anzahl an verworfenen Termen: " HorizontalContentAlignment="Left"/>
                     <Label Grid.Row="2" Name="LabelResult1DeletedTerms" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="3" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="3" Name="LabelResult1nDigits" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="4" Content="Lösung: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="4" Name="LabelResult1Term" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="3" Content="Anzahl an möglichen Termen: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="3" Name="LabelResult1PossibleTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="4" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="4" Name="LabelResult1nDigits" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="5" Content="Lösung: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="5" Name="LabelResult1Term" HorizontalContentAlignment="Right"/>
                     <!--<TextBox Grid.Row="4" Name="TB1"></TextBox>-->
                 </Grid>
             </GroupBox>
