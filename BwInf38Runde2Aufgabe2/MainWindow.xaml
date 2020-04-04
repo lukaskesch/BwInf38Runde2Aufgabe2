@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BwInf38Runde2Aufgabe2"
         mc:Ignorable="d"
-        Title="BwInf 38 Runde 2 Aufgabe 2" Height="390" Width="500"  WindowStartupLocation="CenterScreen">
+        Title="BwInf 38 Runde 2 Aufgabe 2" Height="350" Width="800"  WindowStartupLocation="CenterScreen">
     <Grid>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="170"/>
+            <ColumnDefinition Width="1.4*"/>
             <ColumnDefinition Width="1.4*"/>
         </Grid.ColumnDefinitions>
         <StackPanel Orientation="Vertical">
@@ -27,7 +28,7 @@
                     <Separator/>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Verwende Modulo:" />
-                        <CheckBox Name="CheckBoxModulo" VerticalAlignment="Center"/>
+                        <CheckBox Name="CheckBoxModulo" VerticalAlignment="Center" />
                     </StackPanel>
                     <Separator/>
                     <StackPanel Orientation="Horizontal">
@@ -43,12 +44,8 @@
             <Button Name="ButtonCalculateAB" Content="Berechne A und B" Margin="5" VerticalAlignment="Bottom" Click="ButtonCalculateAB_Click"/>
         </StackPanel>
 
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1.2*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <GroupBox Header="Teil A" Grid.Row="0" Margin="0 5 5 5">
+        <Grid Grid.Column="1" Height="270" VerticalAlignment="Top">
+            <GroupBox Header="Teil A" Margin="0 5 5 5">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -57,23 +54,31 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0"  Content="Rechenzeit in Sek: " HorizontalAlignment="Left"/>
-                    <Label Grid.Row="0" Name="LabelResult1Time" HorizontalAlignment="Right"/>
-                    <Label Grid.Row="1" Content="Anzahl an gespeicherten Termen: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="1" Name="LabelResult1NeededTerms" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="2" Content="Anzahl an verworfenen Termen: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="2" Name="LabelResult1DeletedTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="0" Content="Lösung: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="0" Name="LabelResult1Term" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="1" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="1" Name="LabelResult1nDigits" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="2"  Content="Rechenzeit in Sek: " HorizontalAlignment="Left"/>
+                    <Label Grid.Row="2" Name="LabelResult1Time" HorizontalAlignment="Right"/>
                     <Label Grid.Row="3" Content="Anzahl an möglichen Termen: " HorizontalContentAlignment="Left"/>
                     <Label Grid.Row="3" Name="LabelResult1PossibleTerms" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="4" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="4" Name="LabelResult1nDigits" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="5" Content="Lösung: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="5" Name="LabelResult1Term" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="4" Content="Anzahl an untersuchten Termen:" HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="4" Name="LabelResult1NumberOfCheckedTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="5" Content="Anzahl an ungültigen Termen:" HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="5" Name="LabelResult1NumberOfNotNaruralTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="6" Content="Anzahl an doppelten Termen:" HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="6" Name="LabelResult1NumberOfDoubleTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="7" Content="Anzahl an verwendeten Termen: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="7" Name="LabelResult1NeededTerms" HorizontalContentAlignment="Right"/>
                     <!--<TextBox Grid.Row="4" Name="TB1"></TextBox>-->
                 </Grid>
             </GroupBox>
-            <GroupBox Header="Teil B" Grid.Row="1" Margin="0 0 5 5">
+        </Grid>
+        <Grid Grid.Column="2" Height="250" VerticalAlignment="Top">
+            <GroupBox Header="Teil B" Grid.Row="1" Margin="0 5 5 5">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"/>
@@ -81,17 +86,23 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Label Grid.Row="0"  Content="Rechenzeit in Sek: " HorizontalAlignment="Left"/>
-                    <Label Grid.Row="0" Name="LabelResult2Time" HorizontalAlignment="Right"/>
-                    <Label Grid.Row="1" Content="Anzahl an gespeicherten Termen: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="1" Name="LabelResult2NeededTerms" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="2" Content="Anzahl an verworfenen Termen: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="2" Name="LabelResult2DeletedTerms" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="3" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="3" Name="LabelResult2nDigits" HorizontalContentAlignment="Right"/>
-                    <Label Grid.Row="4" Content="Lösung: " HorizontalContentAlignment="Left"/>
-                    <Label Grid.Row="4" Name="LabelResult2Term" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="0" Content="Lösung: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="0" Name="LabelResult2Term" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="1" Content="Benötigte Ziffern: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="1" Name="LabelResult2nDigits" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="2"  Content="Rechenzeit in Sek: " HorizontalAlignment="Left"/>
+                    <Label Grid.Row="2" Name="LabelResult2Time" HorizontalAlignment="Right"/>
+                    <Label Grid.Row="3" Content="Anzahl an untersuchten Termen:" HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="3" Name="LabelResult2NumberOfCheckedTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="4" Content="Anzahl an ungültigen Termen:" HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="4" Name="LabelResult2NumberOfNotNaruralTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="5" Content="Anzahl an doppelten Termen:" HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="5" Name="LabelResult2NumberOfDoubleTerms" HorizontalContentAlignment="Right"/>
+                    <Label Grid.Row="6" Content="Anzahl an verwendeten Termen: " HorizontalContentAlignment="Left"/>
+                    <Label Grid.Row="6" Name="LabelResult2NeededTerms" HorizontalContentAlignment="Right"/>
                     <!--<TextBox Grid.Row="4" Name="TB2"></TextBox>-->
                 </Grid>
             </GroupBox>

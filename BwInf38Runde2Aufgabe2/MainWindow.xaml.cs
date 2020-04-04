@@ -25,9 +25,10 @@ namespace BwInf38Runde2Aufgabe2
         double CalculationTime;
         int Digit, nDigit;
         long GoalNumber;
+        int NumberOfNotNaturalTerms, NumberOfDoubleTerms;
         int NeededNumberOfDigits1, NeededNumberOfDigits2;
         byte Task;
-        long NumberOfDeletedTerms;
+        //long NumberOfDeletedTerms;
         bool BoolModulo = false;
         bool LogFile = false;
         bool BoolAB = false;
@@ -36,8 +37,8 @@ namespace BwInf38Runde2Aufgabe2
         long[] Statistics;
         string StatisticsString;
 
-        List<List<Term>> ListTerms = new List<List<Term>>();
-        SortedDictionary<long, byte> DictionaryResult = new SortedDictionary<long, byte>();
+        List<List<Term>> ListTerms = new List<List<Term>>(20);
+        SortedDictionary<long, Term> DictionaryResult = new SortedDictionary<long, Term>();
         Stopwatch stopwatch = new Stopwatch();
 
         public MainWindow()
@@ -52,7 +53,9 @@ namespace BwInf38Runde2Aufgabe2
             try
             {
                 BoolModulo = false;
-                NumberOfDeletedTerms = 0;
+                //NumberOfDeletedTerms = 0;
+                NumberOfDoubleTerms = 0;
+                NumberOfNotNaturalTerms = 0;
                 GoalNumber1Reached = false;
                 GoalNumber2Reached = false;
 
@@ -60,7 +63,7 @@ namespace BwInf38Runde2Aufgabe2
                 StatisticsString = string.Empty;
 
                 ListTerms = new List<List<Term>>();
-                DictionaryResult = new SortedDictionary<long, byte>();
+                DictionaryResult = new SortedDictionary<long, Term>();
 
                 LogFile = (bool)CheckLogFile.IsChecked;
                 BoolModulo = (bool)CheckBoxModulo.IsChecked;
@@ -76,13 +79,13 @@ namespace BwInf38Runde2Aufgabe2
                 {
                     LabelResult1Time.Content = 0.ToString();
                     LabelResult1NeededTerms.Content = 1.ToString();
-                    LabelResult1DeletedTerms.Content = 0.ToString();
+                    //LabelResult1DeletedTerms.Content = 0.ToString();
                     LabelResult1nDigits.Content = 2.ToString();
                     LabelResult1Term.Content = "(" + Digit.ToString() + "-" + Digit.ToString() + ")";
 
                     LabelResult2Time.Content = 0.ToString();
                     LabelResult2NeededTerms.Content = 1.ToString();
-                    LabelResult2DeletedTerms.Content = 0.ToString();
+                    //LabelResult2DeletedTerms.Content = 0.ToString();
                     LabelResult2nDigits.Content = 2.ToString();
                     LabelResult2Term.Content = "(" + Digit.ToString() + "-" + Digit.ToString() + ")";
                     return;
@@ -109,8 +112,10 @@ namespace BwInf38Runde2Aufgabe2
 
                     LabelResult1Time.Content = CalculationTime.ToString();
                     LabelResult1NeededTerms.Content = DictionaryResult.Count.ToString();
-                    LabelResult1DeletedTerms.Content = NumberOfDeletedTerms.ToString();
-                    LabelResult1PossibleTerms.Content = GetNumberOfPossibleTerms(nDigit).ToString();
+                    LabelResult1NumberOfCheckedTerms.Content = (NumberOfDoubleTerms + NumberOfNotNaturalTerms + DictionaryResult.Count).ToString();
+                    LabelResult1NumberOfNotNaruralTerms.Content = NumberOfNotNaturalTerms.ToString();
+                    LabelResult1NumberOfDoubleTerms.Content = NumberOfDoubleTerms.ToString();
+                    LabelResult1PossibleTerms.Content = GetNumberOfPossibleTerms(nDigit + 1).ToString();
                     LabelResult1nDigits.Content = NeededNumberOfDigits1.ToString();
                 }
 
@@ -118,7 +123,10 @@ namespace BwInf38Runde2Aufgabe2
                 {
                     stopwatch.Restart();
                     ListTerms = new List<List<Term>>();
-                    DictionaryResult = new SortedDictionary<long, byte>();
+                    DictionaryResult = new SortedDictionary<long, Term>();
+
+                    NumberOfNotNaturalTerms = 0;
+                    NumberOfDoubleTerms = 0;
 
                     Statistics = new long[30];
                     StatisticsString = string.Empty;
@@ -126,7 +134,6 @@ namespace BwInf38Runde2Aufgabe2
                     Statistics[1] = GoalNumber;
 
                     Task = 2;
-                    NumberOfDeletedTerms = 0;
                     CalculateTerm();
                     CalculationTime = stopwatch.ElapsedMilliseconds;
                     Statistics[2] = stopwatch.ElapsedMilliseconds;
@@ -135,8 +142,11 @@ namespace BwInf38Runde2Aufgabe2
 
                     LabelResult2Time.Content = CalculationTime.ToString();
                     LabelResult2NeededTerms.Content = DictionaryResult.Count.ToString();
-                    LabelResult2DeletedTerms.Content = NumberOfDeletedTerms.ToString();
                     LabelResult2nDigits.Content = NeededNumberOfDigits2.ToString();
+
+                    LabelResult2NumberOfCheckedTerms.Content = (NumberOfDoubleTerms + NumberOfNotNaturalTerms + DictionaryResult.Count).ToString();
+                    LabelResult2NumberOfNotNaruralTerms.Content = NumberOfNotNaturalTerms.ToString();
+                    LabelResult2NumberOfDoubleTerms.Content = NumberOfDoubleTerms.ToString();
 
                     if (LogFile)
                     {
@@ -165,9 +175,9 @@ namespace BwInf38Runde2Aufgabe2
             Literal FirstLiteral = new Literal(Digit);
 
             //Lege eine Liste an Index 0 an und speicher in ihr First Literal
-            ListTerms.Add(new List<Term>());
+            ListTerms.Add(new List<Term>(100000));
             ListTerms[0].Add(FirstLiteral);
-            DictionaryResult.Add(FirstLiteral.GetResult(), 0);
+            DictionaryResult.Add(FirstLiteral.GetResult(), FirstLiteral);
 
             //Schaue, ob Literal GoalNumber ist
             if (FirstLiteral.GetResult() == GoalNumber)
@@ -212,7 +222,7 @@ namespace BwInf38Runde2Aufgabe2
                             if (CheckTerm(NewTerm))
                             {
                                 ListTerms[nDigit - 1].Add(NewTerm);
-                                DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                                DictionaryResult.Add(NewTerm.GetResult(), NewTerm);
                             }
                             else if (NewTerm.GetResult() == OldTerm.GetResult())
                             {
@@ -282,12 +292,12 @@ namespace BwInf38Runde2Aufgabe2
                     Statistics[nDigit + 2]++;
 
                     ListTerms[nDigit].Add(NewTerm);
-                    DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                    DictionaryResult.Add(NewTerm.GetResult(), NewTerm);
                 }
             }
 
             //Addition
-            if (Task == 1 || AddOperator.IsCalculatable(Term1, Term2))
+            if (AddOperator.IsCalculatable(Term1, Term2))
             {
                 NewTerm = new AddOperator(Term1, Term2);
                 if (CheckTerm(NewTerm))
@@ -295,9 +305,14 @@ namespace BwInf38Runde2Aufgabe2
                     Statistics[nDigit + 2]++;
 
                     ListTerms[nDigit].Add(NewTerm);
-                    DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                    DictionaryResult.Add(NewTerm.GetResult(), NewTerm);
                 }
             }
+            else
+            {
+                NumberOfNotNaturalTerms++;
+            }
+
 
             //Subtraction
             NewTerm = new SubtractOperator(Term1, Term2);
@@ -306,11 +321,11 @@ namespace BwInf38Runde2Aufgabe2
                 Statistics[nDigit + 2]++;
 
                 ListTerms[nDigit].Add(NewTerm);
-                DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                DictionaryResult.Add(NewTerm.GetResult(), NewTerm);
             }
 
             //Multiplication
-            if (Task == 1 || MultiplyOperator.IsCalculatable(Term1, Term2))
+            if (MultiplyOperator.IsCalculatable(Term1, Term2))
             {
                 NewTerm = new MultiplyOperator(Term1, Term2);
                 if (CheckTerm(NewTerm))
@@ -318,9 +333,14 @@ namespace BwInf38Runde2Aufgabe2
                     Statistics[nDigit + 2]++;
 
                     ListTerms[nDigit].Add(NewTerm);
-                    DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                    DictionaryResult.Add(NewTerm.GetResult(), NewTerm);
                 }
             }
+            else
+            {
+                NumberOfNotNaturalTerms++;
+            }
+
 
             //Division
             if (DivisionOperator.IsCalculatable(Term1, Term2))
@@ -331,9 +351,14 @@ namespace BwInf38Runde2Aufgabe2
                     Statistics[nDigit + 2]++;
 
                     ListTerms[nDigit].Add(NewTerm);
-                    DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                    DictionaryResult.Add(NewTerm.GetResult(), NewTerm);
                 }
             }
+            else
+            {
+                NumberOfNotNaturalTerms++;
+            }
+
 
             //Power - Wird nur ausgeführt, wenn GoalNumber1 schon erreicht wurde
             if (Task == 2)
@@ -346,9 +371,14 @@ namespace BwInf38Runde2Aufgabe2
                         Statistics[nDigit + 2]++;
 
                         ListTerms[nDigit].Add(NewTerm);
-                        DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                        DictionaryResult.Add(NewTerm.GetResult(), NewTerm);
                     }
                 }
+                else
+                {
+                    NumberOfNotNaturalTerms++;
+                }
+
                 if (PowerOperator.IsCalculatable(Term2, Term1))
                 {
                     NewTerm = new PowerOperator(Term2, Term1);
@@ -357,9 +387,14 @@ namespace BwInf38Runde2Aufgabe2
                         Statistics[nDigit + 2]++;
 
                         ListTerms[nDigit].Add(NewTerm);
-                        DictionaryResult.Add(NewTerm.GetResult(), (byte)nDigit);
+                        DictionaryResult.Add(NewTerm.GetResult(), NewTerm);
                     }
                 }
+                else
+                {
+                    NumberOfNotNaturalTerms++;
+                }
+
             }
         }
         private bool CheckTerm(Term NewTerm)
@@ -369,12 +404,12 @@ namespace BwInf38Runde2Aufgabe2
             //Überprüfe, ob Ergebnis schon existiert
             if (DictionaryResult.ContainsKey(TermResult))
             {
-                NumberOfDeletedTerms++;
+                NumberOfDoubleTerms++;
                 return false;
             }
             else if (TermResult <= 0)
             {
-                NumberOfDeletedTerms++;
+                NumberOfNotNaturalTerms++;
                 return false;
             }
             else if (Task == 2 && TermResult == GoalNumber)
@@ -402,14 +437,39 @@ namespace BwInf38Runde2Aufgabe2
 
         private long GetNumberOfPossibleTerms(int nDigit)
         {
-            nDigit++;
-            long NumberOfPossibleTerms = 1;
-            for (int i = 2; i <= nDigit; i++)
+            switch (nDigit)
             {
-                NumberOfPossibleTerms *= 8;
-                NumberOfPossibleTerms++;
+                case 1:
+                    return 1;
+                case 2:
+                    return 9;
+                case 3:
+                    return 73;
+                case 4:
+                    return 1233;
+                case 5:
+                    return 15121;
+                case 6:
+                    return 252377;
+                case 7:
+                    return 3827801;
+                case 8:
+                    return 69786529;
+                case 9:
+                    return 1130435617;
+                case 10:
+                    return 20622154665;
+                case 11:
+                    return 355410904681;
+                case 12:
+                    return 6203366677218;
+                case 13:
+                    return 114580802109113;
+                case 14:
+                    return 2169128857899390;
+                default:
+                    return -1;
             }
-            return NumberOfPossibleTerms;
         }
 
         private void ButtonCalculateAB_Click(object sender, RoutedEventArgs e)
