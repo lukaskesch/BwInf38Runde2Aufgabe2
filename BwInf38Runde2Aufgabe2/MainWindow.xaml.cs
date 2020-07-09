@@ -22,13 +22,15 @@ namespace BwInf38Runde2Aufgabe2
     /// </summary>
     public partial class MainWindow : Window
     {
+        byte Task;
         double CalculationTime;
+
         int Digit, nDigit;
         long GoalNumber;
+
         int NumberOfNotNaturalTerms, NumberOfDoubleTerms;
-        int NeededNumberOfDigits1, NeededNumberOfDigits2;
-        byte Task;
-        //long NumberOfDeletedTerms;
+        int NeededNumberOfDigits1;
+
         bool BoolModulo = false;
         bool LogFile = false;
         bool BoolAB = false;
@@ -53,7 +55,6 @@ namespace BwInf38Runde2Aufgabe2
             try
             {
                 BoolModulo = false;
-                //NumberOfDeletedTerms = 0;
                 NumberOfDoubleTerms = 0;
                 NumberOfNotNaturalTerms = 0;
                 GoalNumber1Reached = false;
@@ -79,13 +80,11 @@ namespace BwInf38Runde2Aufgabe2
                 {
                     LabelResult1Time.Content = 0.ToString();
                     LabelResult1NeededTerms.Content = 1.ToString();
-                    //LabelResult1DeletedTerms.Content = 0.ToString();
                     LabelResult1nDigits.Content = 2.ToString();
                     LabelResult1Term.Content = "(" + Digit.ToString() + "-" + Digit.ToString() + ")";
 
                     LabelResult2Time.Content = 0.ToString();
                     LabelResult2NeededTerms.Content = 1.ToString();
-                    //LabelResult2DeletedTerms.Content = 0.ToString();
                     LabelResult2nDigits.Content = 2.ToString();
                     LabelResult2Term.Content = "(" + Digit.ToString() + "-" + Digit.ToString() + ")";
                     return;
@@ -116,7 +115,7 @@ namespace BwInf38Runde2Aufgabe2
                     LabelResult1NumberOfNotNaruralTerms.Content = NumberOfNotNaturalTerms.ToString();
                     LabelResult1NumberOfDoubleTerms.Content = NumberOfDoubleTerms.ToString();
                     LabelResult1PossibleTerms.Content = GetNumberOfPossibleTerms(nDigit + 1).ToString();
-                    LabelResult1nDigits.Content = NeededNumberOfDigits1.ToString();
+                    LabelResult1nDigits.Content = (nDigit + 1).ToString();
                 }
 
                 if (sender != null || BoolAB)
@@ -142,7 +141,7 @@ namespace BwInf38Runde2Aufgabe2
 
                     LabelResult2Time.Content = CalculationTime.ToString();
                     LabelResult2NeededTerms.Content = DictionaryResult.Count.ToString();
-                    LabelResult2nDigits.Content = NeededNumberOfDigits2.ToString();
+                    LabelResult2nDigits.Content = (nDigit + 1).ToString();
 
                     LabelResult2NumberOfCheckedTerms.Content = (NumberOfDoubleTerms + NumberOfNotNaturalTerms + DictionaryResult.Count).ToString();
                     LabelResult2NumberOfNotNaruralTerms.Content = NumberOfNotNaturalTerms.ToString();
@@ -234,7 +233,6 @@ namespace BwInf38Runde2Aufgabe2
                 }
                 if (Task == 2 && NeededNumberOfDigits1 - 1 <= nDigit && BoolAB)
                 {
-                    NeededNumberOfDigits2 = nDigit;
                     LabelResult2Term.Content = "Keine kürzere Lösung gefunden";
                     return;
                 }
@@ -253,11 +251,10 @@ namespace BwInf38Runde2Aufgabe2
                             //Erstelle alle sinnvollen Terme aus den zwei aktuellen Termen
                             CreateTerms(DigitLenght, ElementsOfDigitLength, RemainingDigitDifference, ElementsOfRemainingDigitDifference);
 
-                            //Breche ab, wenn GoalNum2 erreicht
+                            //Breche ab, wenn GoalNumber erreicht
 
                             if (Task == 2 && GoalNumber2Reached)
                             {
-                                NeededNumberOfDigits2 = nDigit + 1;
                                 return;
                             }
                             else if (Task == 1 && GoalNumber1Reached)
@@ -523,7 +520,7 @@ namespace BwInf38Runde2Aufgabe2
             string FileString = StatisticsString;
             //string FilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Statistics.txt";
             //StreamWriter Writer = new StreamWriter(FileString, true, Encoding.Unicode);
-            StreamWriter WriterStatistics = File.AppendText("Statistics.csf");
+            StreamWriter WriterStatistics = File.AppendText("Statistics.csv");
             try
             {
                 WriterStatistics.WriteLine(FileString);
